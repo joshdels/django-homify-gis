@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Local apps
     "accounts.apps.AccountsConfig",
     "homify.apps.HomifyConfig",
+    "listings.apps.ListingsConfig",
 ]
 
 MIDDLEWARE = [

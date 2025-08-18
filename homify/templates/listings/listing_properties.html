@@ -1,0 +1,9 @@
+<h2>{{ properties.count }} results for {{ view.kwargs.property_type|title }}</h2>
+
+<ul>
+{% for prop in properties %}
+    <li>{{ prop.get_property_type_display }} - {{ prop.address }}</li>
+{% empty %}
+    <li>No properties found.</li>
+{% endfor %}
+</ul>
