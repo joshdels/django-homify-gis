@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <h1>This is a property</h1>
+  <section>Pictures</section>
+  <section>{{ properties.address}}</section>
+  <section> in a box {{ properties.type}} | {{ properties.bedroom}} </section>
+  <section>  {{ properties.price}} | {{properties.floor_area}} </section>
+  <section>  {{ properties.description}} </section>
+  <section>  {{ properties.owner}} , logo ?</section>
+  <section>  Features </section>
+  <section>  Policies </section>
+  
+{% endblock content %}
