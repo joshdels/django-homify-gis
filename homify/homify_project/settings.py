@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.gis",
+    
+    # Extensions
+    "bootstrap5",
     
     # Local apps
     "accounts.apps.AccountsConfig",
@@ -79,8 +83,12 @@ WSGI_APPLICATION = "homify_project.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": "homiefy",
+        "USER": "postgres",
+        "PASSWORD": 'joshua765',
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
@@ -121,7 +129,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-
+STATIC_ROOT = BASE_DIR / "staticfiles" 
+STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = '/media/'

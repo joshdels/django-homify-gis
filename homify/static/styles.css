@@ -1,61 +1,38 @@
+/* Reset html and body */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: auto;
+  overflow: hidden; /* prevent double scrollbars */
+  box-sizing: border-box;
 }
 
-#map { 
-  height: calc(100vh - 68px); 
-  margin: 0;
+/* Adjust for fixed navbar */
+body {
+  padding-top: 55.5px; /* match navbar height */
 }
 
-#privateMap { 
-  height: calc(100vh - 68px); 
-  margin: 0;
+/* Full-height map and sidebar */
+#map{
+  height: 93vh;
+  background-color: #f0f0f0;
 }
 
-#sidebar{
-  height: calc(100vh - 68px); 
+/* Sidebar scroll if content is taller than viewport */
+#sidebar {
+  height: 100vh;
   overflow-y: auto;
 }
 
-.custom-navbar {
-  position: relative;
-  border-bottom: 2px solid #333; /* make the border more visible if needed */
+/* Property cards styling */
+.property-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
-.modal-custom {
-  width: 100%; /* Mobile default: full width */
-  margin: auto;
+.property-card:hover {
+  transform: translateY(-3px);
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
-
-@media (min-width: 400px) {
-  .modal-custom {
-    width: 75%;  /* Tablet and up */
-    max-width: 900px; /* Optional cap */
-  }
-}
-
-#card-header {
-  font-weight: bold;
-}
-
-#card-text-1{
-  font-size: 13px;
-}
-
-#card-text-2{
-  font-size: 13px;
-}
-
-#header-table{
-  overflow-x: auto;
-  
-}
-
-#user-table{
-  white-space: nowrap;
-}
-
-

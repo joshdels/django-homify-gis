@@ -5,7 +5,7 @@ from .models import Property, PropertyImage
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        exclude = ["owner", "created_at", "updated_at"]
+        exclude = ["owner", "created_at", "updated_at", 'image', 'latitude', 'longitude']
 
 # A formset for multiple images (default: 3 upload slots, can increase dynamically with JS)
 PropertyImageFormSet = modelformset_factory(

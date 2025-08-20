@@ -1,0 +1,67 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+#map, #sidebar {
+  height: 100%;
+  background-color: #f0f0f0
+}
+
+#privateMap { 
+  height: calc(100vh - 68px); 
+  margin: 0;
+}
+
+#sidebar{
+  height: calc(100vh - 68px); 
+  overflow-y: auto;
+}
+
+
+@media (min-width: 400px) {
+  .modal-custom {
+    width: 75%;  /* Tablet and up */
+    max-width: 900px; /* Optional cap */
+  }
+}
+
+
+/* Resize card images: small and uniform */
+.property-card-img {
+  width: 100%;          /* full card width */
+  height: 120px;        /* smaller height */
+  object-fit: cover;    /* crop to fit */
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+/* Optional: smaller card body for compact look */
+.property-card .card-body {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;   /* smaller font */
+}
+
+/* Hover effect for cards */
+.property-card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0.3rem 0.8rem rgba(0,0,0,0.15);
+}
+
+  /* Resize card images */
+  .property-card-img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* Hover effect for cards */
+  .property-card:hover {
+    transform: translateY(-3px);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+

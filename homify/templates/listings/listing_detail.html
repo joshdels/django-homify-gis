@@ -1,15 +1,95 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-  <h1>This is a property</h1>
-  <section>Pictures</section>
-  <section>{{ properties.address}}</section>
-  <section> in a box {{ properties.type}} | {{ properties.bedroom}} </section>
-  <section>  {{ properties.price}} | {{properties.floor_area}} </section>
-  <section>  {{ properties.description}} </section>
-  <section>  {{ properties.owner}} , logo ?</section>
-  <section>  Features </section>
-  <section>  Policies </section>
-  
+<div class="container my-5">
+  <!-- Property Title -->
+  <h1 class="mb-4">{{ properties.address }}</h1>
+
+  <!-- Horizontal scroll images -->
+  <div class="mb-4">
+    <div class="d-flex overflow-auto" style="gap:1rem;">
+      {% for img in properties.images.all %}
+        <div class="flex-shrink-0">
+          <img src="{{ img.image.url }}" class="rounded" style="height:200px; width:auto;" alt="{{ img.caption|default:'Property image' }}">
+          {% if img.caption %}
+            <small class="d-block text-center">{{ img.caption }}</small>
+          {% endif %}
+        </div>
+      {% empty %}
+        <div class="flex-shrink-0">
+          <img src="https://via.placeholder.com/300x200" class="rounded" alt="No image">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Property Details -->
+  <div class="card shadow-sm p-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ properties.property_type|title }}</h5>
+
+      <p class="card-text mb-2">
+        <span class="me-1">{{ properties.bedrooms }} Beds</span>
+        <span class="">{{ properties.floor_area|floatformat:0 }} sq.m</span>
+        <span class="">{{ properties.bathrooms }} Baths</span>
+      </p>
+
+      <h4 class="mb-3">₱{{ properties.price|floatformat:0 }}</h4>
+
+      <p>{{ properties.description }}</p>
+
+      <hr>
+      <div class="d-flex align-items-center mb-3">
+        <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" 
+            alt="Owner logo" 
+            class="rounded-circle me-3 img-fluid"
+            style="width:60px; height:60px; object-fit:cover;">
+        <div>
+          <p class="mb-0"><strong>{{ properties.owner.username|title }}</strong></p>
+          <small class="text-muted">Contact: {{ properties.owner.email }}</small>
+        </div>
+      </div>
+
+
+      <hr>
+
+      <h6>Property Details</h6>
+      <ul class="list-unstyled">
+        <li><strong>Status:</strong> {{ properties.get_status_display }}</li>
+        <li><strong>Available Units:</strong> {{ properties.available_unit }}</li>
+        <li><strong>Floor Storey:</strong> {{ properties.floor_storey }}</li>
+        <li><strong>Parking Spaces:</strong> {{ properties.parking_spaces }}</li>
+        <li><strong>Latitude:</strong> {{ properties.latitude }}</li>
+        <li><strong>Longitude:</strong> {{ properties.longitude }}</li>
+      </ul>
+
+      <hr>
+
+      <h6>Features</h6>
+      <ul>
+        {% for feature in properties.features.all %}
+          <li>{{ feature.name }}</li>
+        {% empty %}
+          <li>No features listed.</li>
+        {% endfor %}
+      </ul>
+
+      <h6>Policies</h6>
+      <ul>
+        {% for policy in properties.policies.all %}
+          <li>{{ policy.name }}</li>
+        {% empty %}
+          <li>No policies listed.</li>
+        {% endfor %}
+      </ul>
+
+      <hr>
+      <h6>Places Nearby</h6>
+      <span>Map!</span>
+    </div>
+  </div>
+</div>
 {% endblock content %}
+
+
+
