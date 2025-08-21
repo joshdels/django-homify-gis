@@ -14,7 +14,8 @@ body {
 
 /* Full-height map and sidebar */
 #map{
-  height: 93vh;
+  height: 100vh;
+  
   background-color: #f0f0f0;
 }
 

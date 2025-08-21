@@ -10,6 +10,7 @@ urlpatterns = [
     path("accounts/", include('django.contrib.auth.urls')),
     path("accounts/", include('accounts.urls')),
     path("listings/", include('listings.urls')),
+    path("map-data/", include('map_data.urls')),
 ]
 
 if settings.DEBUG:

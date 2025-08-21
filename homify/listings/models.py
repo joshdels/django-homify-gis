@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.postgres.indexes import GistIndex 
 
 
 class Property(models.Model):
@@ -45,8 +46,13 @@ class Property(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
+    geom = models.PointField(srid=4326, null=True, blank=True)
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=["geom"]),
+            GistIndex(fields=["geom"]),
+        ]
 
     def __str__(self):
         return f"{self.get_property_type_display()} - {self.address or 'No Address'}"
