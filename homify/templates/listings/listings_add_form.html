@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container-fluid vh-100 p-0" style="overflow-x: hidden;">
+<div class="container-fluid vh-90 p-0" style="overflow-x: hidden;">
   <div class="row g-0">
 
     <!-- Map (sticky) -->
@@ -17,6 +17,8 @@
       
       <div class="p-4 w-100 d-flex flex-column flex-grow-1">
         <h2 class="fw-bold mb-4 text-primary">➕ Add New Property</h2>
+
+        <button id="pinbtn">Pin Location</button>
 
         <form method="post" enctype="multipart/form-data" class="d-flex flex-column flex-grow-1">
           {% csrf_token %}

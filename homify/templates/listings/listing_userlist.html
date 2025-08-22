@@ -1,4 +1,5 @@
 {% extends "base_v2.html" %}
+{% load static %}
 
 {% block title %} My Properties {% endblock title %}
 
@@ -134,6 +135,8 @@
    
 
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'map/publicData.js' %}"></script>
 </div>
 
 {% endblock %}

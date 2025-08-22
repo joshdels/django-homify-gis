@@ -4,6 +4,7 @@ from django.views.generic import DetailView, ListView, UpdateView, DeleteView, C
 from django.urls import reverse_lazy
 from .models import Property, PropertyImage
 from .forms import PropertyForm, PropertyImageFormSet
+from django.contrib.gis.geos import Point
 
 
 class PropertyAllView(ListView):
@@ -31,11 +32,11 @@ class PropertyCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("listing_user")
 
     def form_valid(self, form):
-        # Set the logged-in user as owner
+        print("POST data:", self.request.POST)
         form.instance.owner = self.request.user
         self.object = form.save()
 
-        # Save each uploaded image
+        # Save uploaded images
         for f in self.request.FILES.getlist("images"):
             PropertyImage.objects.create(property=self.object, image=f)
 

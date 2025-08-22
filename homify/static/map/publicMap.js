@@ -4,7 +4,7 @@ let map = L.map('map', {
 
 // Layers
 let locationLayer;
-$.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
+$.getJSON('http://127.0.0.1:8000/map-data/all-properties', function(data) {
   if (locationLayer) {
     map.removeLayer(locationLayer);
   }
@@ -20,21 +20,10 @@ $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
         interactive: true
       })
     },
+
     onEachFeature: function(feature, layer) {
       layer.bindPopup(
         `
-        <div class="card shadow border-0" style="width: 100%; max-width: 18rem;">
-          <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" class="card-img-top img-fluid" alt="Preview image">
-              <div class="card-body">
-                <h5 class="mb-2" id="card-header">₱${feature.properties.rent_per_month}/month</h5>
-                <p class="m-0 mb-1" id="card-text-1"> <strong> ${feature.properties.type} </strong> | <strong> 
-                  ${feature.properties.area_sqm}</strong> sqm  | <strong>${feature.properties.no_rooms}</strong> bed/s</p>
-                <p class="m-0" id="card-text-2"> ${feature.properties.address}</p>
-              </div>
-            
-            <button class="btn btn-primary open-modal-btn w-100" data-id="${feature.properties.id}">View Details</button>
-          </div>
-        </div>
         `
       );
 
@@ -54,6 +43,7 @@ $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
       });
     }
   }).addTo(map)
+   map.fitBounds(location.getBounds())
 });
 
 $.getJSON('http://127.0.0.1:8000/boundary-data/', function(data) {

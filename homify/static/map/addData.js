@@ -89,25 +89,57 @@ L.control.zoom({
 }).addTo(map);
 
 
+// Keep track of the current marker
+let currentMarker = null;
+
 // Geoman
-const addNewBtn = document.getElementById("pinLocation");
+const addNewBtn = document.getElementById("pinbtn");
 
 L.DomEvent.on(addNewBtn, "click", function (e) {
   L.DomEvent.stopPropagation(e);
   L.DomEvent.preventDefault(e);
 
-  map.pm.enableDraw("Marker");
+  // 🔹 Remove previous marker right away
+  if (currentMarker) {
+    map.removeLayer(currentMarker);
+    currentMarker = null;
+  }
+
+  // Enable drawing
+
+  const customIcon = L.divIcon({
+    html: '<i class="bi bi-geo-alt-fill" style="font-size:32px;color:red;display:flex;align-items:center;justify-content:center;width:48px;height:48px;"></i>',
+    className: '',
+    iconSize: [48, 48],
+    iconAnchor: [24, 45]  // still bottom-center
+  });
+
+  map.pm.enableDraw("Marker", {
+    markerStyle: {
+      icon: customIcon
+    }
+  });
 
   map.once("pm:create", (e) => {
     const layer = e.layer;
-    layer.addTo(map);
 
+    // Save new marker
+    currentMarker = layer;
+    layer.addTo(map);
     map.pm.disableDraw();
 
     const geojson = layer.toGeoJSON();
     const coordinates = geojson.geometry.coordinates;
 
-    console.log(coordinates)
+    console.log(coordinates);
+    console.log(coordinates[1]);
+    console.log(coordinates[0]);
+    
+    const latInput = document.querySelector('input[name="latitude"]');
+    const lngInput = document.querySelector('input[name="longitude"]');
+
+    latInput.value = coordinates[1];
+    lngInput.value = coordinates[0];
 
   });
 });
