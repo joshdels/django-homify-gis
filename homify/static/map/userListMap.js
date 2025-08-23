@@ -1,9 +1,9 @@
-let map = L.map("privateMap", {
+let map = L.map("map", {
   zoomControl: false,
 }).setView([51.505, -0.09], 13);
 
 // Layers
-$.getJSON("/location-data/", function (data) {
+$.getJSON("http://127.0.0.1:8000/map-data/user-properties", function (data) {
   let location = L.geoJSON(data, {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {

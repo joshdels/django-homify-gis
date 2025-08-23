@@ -9,11 +9,15 @@ class PropertyForm(forms.ModelForm):
     
     class Meta:
         model = Property
-        exclude = ["owner", "created_at", "updated_at", 'image']
+        exclude = ["owner", "created_at", "updated_at",]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Make sure the fields are optional at first so form renders
+        if self.instance and self.instance.geom:
+            self.fields['latitude'].initial = self.instance.geom.y
+            self.fields['longitude'].initial = self.instance.geom.x            
+        
         self.fields['latitude'].required = True
         self.fields['longitude'].required = True
 

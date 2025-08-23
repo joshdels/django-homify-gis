@@ -7,60 +7,52 @@
   <form method="post" enctype="multipart/form-data" id="propertyForm">
     {% csrf_token %}
 
-    <!-- Property Details -->
-    <div class="card mb-4 shadow-sm p-4">
-      <h5 class="mb-3">Property Details</h5>
-      <div class="row g-3">
-        {% for field in form %}
-          <div class="col-md-6">
-            <label class="form-label">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-              <div class="text-danger small mt-1">{{ field.errors }}</div>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Current Main Image -->
-    {% if properties.image %}
+        <!-- Property Details -->
       <div class="card mb-4 shadow-sm p-4">
-        <h5 class="mb-3">Current Main Image</h5>
-        <div class="text-center mb-3">
-          <img src="{{ properties.image.url }}" class="img-fluid rounded mb-2" alt="Main image">
+        <h5 class="mb-3">Property Details</h5>
+        <div class="row g-3">
+          {% for field in form %}
+            {% if field.name != "image" %}
+              <div class="col-md-6">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">{{ field.errors }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          {{ form.latitude }}
+          {{ form.longitude }}
         </div>
       </div>
-    {% endif %}
 
-   <!-- Existing Additional Images -->
-  {% if properties.images.all %}
-    <div class="card mb-4 shadow-sm p-4">
-      <h5 class="mb-3">Existing Images</h5>
-      <div class="row g-3">
-        {% for img in properties.images.all %}
-          <div class="col-md-4 text-center mb-3">
-            <img src="{{ img.image.url }}" class="img-fluid rounded mb-2" alt="Property image">
-            <label class="form-check-label d-block mb-1">
-              <input type="checkbox" name="delete_image_{{ img.id }}"> Delete
-            </label>
-            <input type="file" name="replace_image_{{ img.id }}" class="form-control mt-1">
+      <!-- Existing Images -->
+      {% if object.images.all %}
+        <div class="card mb-4 shadow-sm p-4">
+          <h5 class="mb-3">Existing Images</h5>
+          <div class="row g-3">
+            {% for img in object.images.all %}
+              <div class="col-md-4 text-center mb-3">
+                <img src="{{ img.image.url }}" 
+                    class="img-fluid rounded mb-2" alt="Property image">
+                <div class="form-check">
+                  <input type="checkbox" name="delete_image_{{ img.id }}" class="form-check-input">
+                  <label class="form-check-label">Delete</label>
+                </div>
+                <input type="file" name="replace_image_{{ img.id }}" class="form-control mt-2">
+              </div>
+            {% endfor %}
           </div>
-        {% endfor %}
-      </div>
-    </div>
-  {% endif %}
-
-    <!-- Add New Images -->
-    <div class="card mb-4 shadow-sm p-4">
-      <h5 class="mb-3">Add New Images</h5>
-      <div id="imageFields">
-        <div class="mb-3 p-3 border rounded image-field">
-          <input type="file" name="images" class="form-control">
         </div>
+      {% endif %}
+
+
+      <!-- Add New Images -->
+      <div class="card mb-4 shadow-sm p-4">
+        <h5 class="mb-3">Add New Images</h5>
+        <input type="file" name="images" multiple class="form-control">
       </div>
-      <button type="button" class="btn btn-secondary mb-3" id="addImageBtn">Add Another Image</button>
-    </div>
 
     <button type="submit" class="btn btn-primary btn-lg">Update Property</button>
     <a href="{% url 'listing_user' %}" class="btn btn-secondary btn-lg ms-2">Cancel</a>
@@ -71,21 +63,4 @@
   input, select, textarea { width: 100%; padding: 0.5rem; border-radius: 0.25rem; border: 1px solid #ced4da; }
 </style>
 
-<script>
-  document.getElementById('addImageBtn').addEventListener('click', function() {
-    const container = document.getElementById('imageFields');
-    const newField = document.createElement('div');
-    newField.classList.add('mb-3', 'p-3', 'border', 'rounded', 'image-field');
-    newField.innerHTML = `
-      <input type="file" name="images" class="form-control">
-      <button type="button" class="btn btn-sm btn-danger mt-2 removeBtn">Remove</button>
-    `;
-    container.appendChild(newField);
-
-    newField.querySelector('.removeBtn').addEventListener('click', function() {
-      container.removeChild(newField);
-    });
-  });
-</script>
 {% endblock %}
- 

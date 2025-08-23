@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('all-properties', views.PropertyAllListing , name='all_properties'),
+    path('user-properties', views.PropertyUserListing , name='user_properties'),
 ]
 
 

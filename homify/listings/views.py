@@ -65,34 +65,30 @@ class PropertyUpdateView(LoginRequiredMixin, UpdateView):
         return Property.objects.filter(owner=self.request.user)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.form_class(request.POST, request.FILES, instance=self.object)
-        
-        if form.is_valid():
-            property_instance = form.save()
+            self.object = self.get_object()
+            form = self.form_class(request.POST, request.FILES, instance=self.object)
 
-            # Update main image if new file uploaded
-            if 'image' in request.FILES:
-                property_instance.image = request.FILES['image']
-                property_instance.save()
+            if form.is_valid():
+                property_instance = form.save()
 
-            # Delete selected additional images
-            for key in request.POST:
-                if key.startswith("delete_image_"):
-                    img_id = key.split("delete_image_")[1]
-                    try:
-                        img = PropertyImage.objects.get(id=img_id, property=property_instance)
+                # --- Handle existing images ---
+                for img in property_instance.images.all():
+                    if f"delete_image_{img.id}" in request.POST:
                         img.delete()
-                    except PropertyImage.DoesNotExist:
-                        pass
+                    elif f"replace_image_{img.id}" in request.FILES:
+                        img.image = request.FILES[f"replace_image_{img.id}"]
+                        img.save()
 
-            # Add new additional images
-            for f in request.FILES.getlist("images"):
-                PropertyImage.objects.create(property=property_instance, image=f)
+                # --- Handle new uploads ---
+                for f in request.FILES.getlist("images"):
+                    PropertyImage.objects.create(property=property_instance, image=f)
 
-            return redirect(self.success_url)
-        else:
-            return render(request, self.template_name, {"form": form, "properties": self.object})
+                return redirect(self.success_url)
+
+            return render(request, self.template_name, {
+                "form": form,
+                "property": self.object, 
+            })
     
     
 class PropertyDeleteView(LoginRequiredMixin, DeleteView):
