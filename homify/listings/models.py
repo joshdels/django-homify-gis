@@ -12,7 +12,7 @@ class Property(models.Model):
         ("commercial", "Commercial"),
     ]
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="residential")
-
+    
     PROPERTY_TYPES = [
         ("house", "House"),
         ("boarding_hosuse", "Boarding House"),
@@ -25,11 +25,11 @@ class Property(models.Model):
     property_type = models.CharField(max_length=50, choices=PROPERTY_TYPES)
 
     address = models.CharField(max_length=200, blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    price = models.IntegerField(blank=True, null=True)
     bedrooms = models.IntegerField(blank=True, null=True)
     bathrooms = models.IntegerField(blank=True, null=True)
     floor_storey = models.IntegerField(blank=True, null=True, default=1)
-    floor_area = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    floor_area = models.IntegerField(blank=True, null=True)
     available_unit = models.IntegerField(blank=True, null=True, default=1)
     parking_spaces = models.IntegerField(blank=True, null=True)
 
