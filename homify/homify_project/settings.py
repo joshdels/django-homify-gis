@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     
     # Extensions
     "bootstrap5",
+    "rest_framework",
+    "rest_framework_gis",
+    "widget_tweaks",
     
     # Local apps
     "accounts.apps.AccountsConfig",

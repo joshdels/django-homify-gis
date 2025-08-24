@@ -14,9 +14,8 @@ body {
 
 /* Full-height map and sidebar */
 #map{
-  height: 100vh;
-  
-  background-color: #f0f0f0;
+    height: calc(100vh - 55.5px);
+    position: relative;
 }
 
 /* Sidebar scroll if content is taller than viewport */
@@ -37,3 +36,46 @@ body {
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
+
+
+/* Leaflet */
+.leaflet-popup-content-wrapper {
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0; /* Bootstrap's default card radius */
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.125);
+  padding: 0; 
+  overflow: hidden; 
+}
+
+/* Custom popup class */
+.leaflet-popup-content {
+    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; /* match Bootstrap */
+    font-size: 0.875rem;  /* optional: match sidebar card text size */
+    color: #212529;       /* Bootstrap body text color */
+    padding: 0;           /* remove extra padding if using card inside popup */
+}
+
+
+
+.leaflet-popup-close-button {
+  background-color: blue;       /* your desired color */
+  opacity: 0.8;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  top: 0.5rem;
+  right: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.leaflet-popup-close-button:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+
+

@@ -1,6 +1,6 @@
 let map = L.map("map", {
   zoomControl: false,
-}).setView([51.505, -0.09], 13);
+}).setView([12.8797, 121.7740], 6);
 
 // Layers
 $.getJSON("http://127.0.0.1:8000/map-data/user-properties", function (data) {
@@ -38,6 +38,11 @@ $.getJSON("http://127.0.0.1:8000/map-data/user-properties", function (data) {
       // });
     },
   }).addTo(map);
+     map.fitBounds(location.getBounds(), {
+      maxZoom: 7,
+      padding: [50, 50]
+     }
+    )
 });
 
 $.getJSON("/boundary-data/", function (data) {
@@ -50,45 +55,38 @@ $.getJSON("/boundary-data/", function (data) {
     },
     interactive: false,
   }).addTo(map);
-  map.fitBounds(boundary.getBounds());
+  map.fitBounds(boundary.getBounds(), {
+    maxZoom: 12,
+    padding: [50, 50]
+  });
 });
 
 // Basemaps
-let terrain = L.tileLayer(
-  "http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}",
-  {
-    maxZoom: 19,
-  }
-).addTo(map);
+let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
+  maxZoom: 22,
+}).addTo(map);
 
-let satellite = L.tileLayer(
-  "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}",
-  {
-    maxZoom: 19,
-  }
-);
 
-var CartoDB_Voyager = L.tileLayer(
-  "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-  {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: "abcd",
-    maxZoom: 20,
-  }
-);
+let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
+    maxZoom: 22,
+})
+
+
+var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+});
+
 
 let basemaps = {
-  Satellite: satellite,
-  Terrain: terrain,
-  Voyager: CartoDB_Voyager,
-};
+  "Road": terrain,
+  "Satellite": satellite,
+  "OSM": OpenStreetMap_HOT,
+}
 
-L.control
-  .layers(basemaps, null, {
-    position: "bottomright",
-  })
-  .addTo(map);
+L.control.layers(basemaps, null, {
+  position: 'bottomright'
+}).addTo(map);
 
 L.control
   .zoom({

@@ -1,17 +1,21 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.core.serializers import serialize
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import PropertySerializer
 from listings.models import Property
 
-# Create your views here.
+@api_view(["GET"])
 def PropertyAllListing(request):
   location = Property.objects.all()
-  geojson = serialize('geojson', location)
-  return HttpResponse(geojson, content_type='application/json')
+  serializer = PropertySerializer(location, many=True, context={"request": request})
+  return Response(serializer.data)
 
-@login_required
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def PropertyUserListing(request):
   location = Property.objects.filter(owner=request.user)
-  geojson = serialize('geojson', location)
-  return HttpResponse(geojson, content_type='application/json')
+  serializer = PropertySerializer(location, many=True, context={"request": request})
+  return Response(serializer.data)
+
+
 

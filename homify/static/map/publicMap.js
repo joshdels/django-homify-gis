@@ -22,10 +22,27 @@ $.getJSON('http://127.0.0.1:8000/map-data/all-properties', function(data) {
     },
 
     onEachFeature: function(feature, layer) {
-      layer.bindPopup(
-        `
-        `
-      );
+      const prop = feature.properties
+        layer.bindPopup(
+          `
+          <div class="card">
+            <img src="${prop.images[0].image_url}" class="card-img-top" alt="Property image">
+            <div class="card-body">
+              <h5 class="mb-2" id="card-header">₱${Math.round(Number(prop.price))} /mo </h5>
+              
+              <!-- Property details -->
+              <p class="card-text m-0 mb-1">
+                ${prop.category.charAt(0).toUpperCase() +prop.category.slice(1)} <br>
+                <strong>${prop.floor_area}</strong> sqm | <strong>${prop.bedrooms}</strong> bed/s
+              </p>
+
+              <!-- View Details button -->
+              <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
+            </div>
+          </div>
+          `,
+        );
+
 
       layer.on({
         mouseover: function(e) {
@@ -43,45 +60,40 @@ $.getJSON('http://127.0.0.1:8000/map-data/all-properties', function(data) {
       });
     }
   }).addTo(map)
-   map.fitBounds(location.getBounds())
+   map.fitBounds(location.getBounds(), {
+    maxZoom: 7,
+    padding: [50, 50]
+   })
 });
 
-$.getJSON('http://127.0.0.1:8000/boundary-data/', function(data) {
-  let boundary = L.geoJSON(data, {
-    style: {
-      color: "black",
-      fillOpacity: 0,
-      weight: 1,
-      dashArray: '2,4'
-    },
-    interactive: false
-  }).addTo(map);
-  map.fitBounds(boundary.getBounds())
-})
+
 
 
 // Basemaps
 let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
-  maxZoom: 19,
+  maxZoom: 22,
 }).addTo(map);
 
-let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
-    maxZoom: 19,
-})
 
+let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
+    maxZoom: 22,
+})
 
 var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
-	maxZoom: 20
+	maxZoom: 22
+});
+
+var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
 });
 
 let basemaps = {
+  "Road": terrain,
   "Satellite": satellite,
-  "Terrain": terrain,
-  "Voyager": CartoDB_Voyager,
+  "OSM": OpenStreetMap_HOT,
 }
-
 
 L.control.layers(basemaps, null, {
   position: 'bottomright'

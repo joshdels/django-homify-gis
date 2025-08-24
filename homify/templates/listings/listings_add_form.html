@@ -1,36 +1,41 @@
 {% extends "base_v2.html" %}
 {% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Add Properties{% endblock title %}
 
 {% block content %}
 
-<div class="container-fluid vh-90 p-0" style="overflow-x: hidden;">
-  <div class="row g-0">
+<div class="container-fluid p-0" style="overflow-x: hidden; height: 100vh;">
+  <div class="row g-0 h-100">
 
-    <!-- Map (sticky) -->
-    <div class="col-12 col-md-6 p-0" id="map" style="background-color: black;">
+    <!-- LEFT: Map -->
+    <div class="col-12 col-md-6 p-0" id="map" style="background-color: #000;">
       Map
     </div>
 
-    <!-- Sidebar / Form -->
-    <div class="col-12 col-md-6 bg-light d-flex flex-column" 
-         style="overflow-x: hidden; overflow-y: auto; max-height: 100vh;">
-      
-      <div class="p-4 w-100 d-flex flex-column flex-grow-1">
-        <h2 class="fw-bold mb-4 text-primary">➕ Add New Property</h2>
+    <!-- RIGHT: Sidebar / Form -->
+    <div class="col-12 col-md-6 bg-light d-flex flex-column" style="overflow-y: auto;" id="sidebar">
+      <div class="p-4 d-flex flex-column flex-grow-1">
 
-        <button id="pinbtn">Pin Location</button>
+        <!-- Header -->
+        <h2 class="fw-bold mb-4">Add New Property</h2>
 
+        <!-- Pin Button -->
+        <button id="pinbtn" class="btn btn-outline-primary mb-4 w-50">Pin Location</button>
+
+        <!-- Form -->
         <form method="post" enctype="multipart/form-data" class="d-flex flex-column flex-grow-1">
           {% csrf_token %}
 
           <!-- Property Details -->
           <div class="mb-4">
             <h5 class="fw-semibold mb-3 text-secondary">🏠 Property Details</h5>
-            <div class="row g-3" style="margin-left:0; margin-right:0;">
+            <div class="row g-3">
               {% for field in form %}
-                <div class="col-md-6 px-0">
+                <div class="col-md-6">
                   <label class="form-label fw-semibold">{{ field.label }}</label>
-                  {{ field }}
+                  {{ field|add_class:"form-control" }}
                   {% if field.errors %}
                     <div class="text-danger small mt-1">{{ field.errors }}</div>
                   {% endif %}
@@ -46,15 +51,17 @@
             <input type="file" name="images" class="form-control" multiple required>
           </div>
 
-          <!-- Save Button at Bottom -->
-          <div class="mt-auto pt-3 border-top bg-light">
+          <!-- Save Button -->
+          <div class="mt-auto pt-3 border-top">
             <div class="d-grid">
               <button type="submit" class="btn btn-primary btn-lg shadow-sm rounded-pill">
                 💾 Save Property
               </button>
             </div>
           </div>
+
         </form>
+
       </div>
       {% include 'page_footer.html' %}
     </div>
@@ -63,9 +70,7 @@
 </div>
 
 <style>
-  body, html {
-    overflow-x: hidden; /* remove horizontal scroll */
-  }
+  /* Form inputs */
   input, select, textarea {
     width: 100%;
     padding: 0.6rem;
@@ -73,10 +78,16 @@
     border: 1px solid #ced4da;
     box-sizing: border-box;
   }
+  
+#sidebar {
+  height: 100vh;  /* sidebar full height */
+  overflow-y: auto; /* enable vertical scroll */
+}
+
+
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'map/addData.js' %}"></script>
-
 
 {% endblock %}
