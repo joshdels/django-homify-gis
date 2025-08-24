@@ -33,7 +33,9 @@ This is a webgis project with total CRUD (Create, Read, Update, Delete) Features
 ## Installation / Setup
 1. Navigate to the folder: `cd homify`
 2. Install dependencies: `pip install -r requirements.txt`
-3. Run the project: `python manage.py runserver`
+3. Update Schma: `python manage.py makemigrations`
+4. Update teh database: `python manage.py migrate`
+5. Run the project: `python manage.py runserver`
 
 ---
 
