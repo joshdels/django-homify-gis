@@ -9,7 +9,7 @@ class PropertyForm(forms.ModelForm):
     
     class Meta:
         model = Property
-        exclude = ["owner", "created_at", "updated_at",]
+        exclude = ["owner", "created_at", "updated_at", "image"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

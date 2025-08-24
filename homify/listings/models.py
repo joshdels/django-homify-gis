@@ -33,8 +33,6 @@ class Property(models.Model):
     available_unit = models.IntegerField(blank=True, null=True, default=1)
     parking_spaces = models.IntegerField(blank=True, null=True)
 
-    image = models.ImageField(upload_to="property_images/", blank=True, null=True)
-
     STATUS_CHOICES = [
         ("available", "Available"),
         ("rented", "Rented"),
@@ -47,13 +45,12 @@ class Property(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     geom = models.PointField(srid=4326, null=True, blank=True)
-    
     class Meta:
         indexes = [
             models.Index(fields=["geom"]),
             GistIndex(fields=["geom"]),
         ]
-
+        
     def __str__(self):
         return f"{self.get_property_type_display()} - {self.address or 'No Address'}"
 
