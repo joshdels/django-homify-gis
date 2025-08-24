@@ -30,6 +30,9 @@ class PropertySerializer(GeoFeatureModelSerializer):
 
     def get_image_url(self, obj):
         request = self.context.get("request")
-        if obj.image and hasattr(obj.image, "url"):
-            return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+        first_image = obj.images.first()
+        if first_image and first_image.image:
+            url = first_image.image.url
+            return request.build_absolute_uri(url) if request else url
         return None
+

@@ -44,6 +44,8 @@ class Property(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    
+    
     geom = models.PointField(srid=4326, null=True, blank=True)
     class Meta:
         indexes = [
