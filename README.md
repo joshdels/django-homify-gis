@@ -1,14 +1,15 @@
 # HOMIFY
 
-A house projects gis for enterprise
+This is a webgis project with total CRUD (Create, Read, Update, Delete) Features for the potential sellers to list their properties so that is visible to the potential buyers
 
 ---
 
 ## Features
 - Log-Ins/Signup
+- Homepage (News, Updates, Testimony)
+- Multiple Basemaps 
 - General Map Listing
 - User Dashboard (Add, Edit, Delete)
-- Homepage (News, Updates, Testimony)
 - API ready using rest-django
 
 ---
@@ -16,8 +17,8 @@ A house projects gis for enterprise
 ## Screenshots
 ![Homepage](homify/static/imgs/6.PNG)
 ![General Map](homify/static/imgs/7.PNG)
-![Dashboard Map](homify/static/imgs/7.PNG)
-![Add Property](homify/static/imgs/7.PNG)
+![Dashboard Map](homify/static/imgs/5.PNG)
+![Add Property](homify/static/imgs/1.PNG)
 
 ---
 
