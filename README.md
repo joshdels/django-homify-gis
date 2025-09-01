@@ -42,3 +42,10 @@ This is a webgis project with total CRUD (Create, Read, Update, Delete) Features
 ## License
 MIT
 
+for postgis
+*postgis image*
+rm -r wait-for-it.sh
+curl -O https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+chmod +x wait-for-it.sh
+
+

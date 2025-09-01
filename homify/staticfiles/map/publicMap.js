@@ -1,127 +1,116 @@
+let map = L.map('map', {
+  zoomControl: false
+}).setView([51.505, -0.09], 13);
 
-  // Initialize the map
-  let map = L.map('map').setView([51.505, -0.09], 13);
+// Layers
+let locationLayer;
+$.getJSON('http://127.0.0.1:8001/map-data/all-properties', function(data) {
+  if (locationLayer) {
+    map.removeLayer(locationLayer);
+  }
 
-  // Add a base tile layer
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-    maxZoom: 19
-  }).addTo(map);
+  let location = L.geoJSON(data, {
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng, {
+        color: "white",
+        fillColor: "purple",
+        fillOpacity: 1,
+        fill: true,
+        radius: 6,
+        interactive: true
+      })
+    },
 
-  // Optional: test marker
-  L.marker([51.505, -0.09]).addTo(map)
-    .bindPopup('Test Marker')
-    .openPopup();
+    onEachFeature: function(feature, layer) {
+      const prop = feature.properties
+        layer.bindPopup(
+          `
+          <div class="card">
+            <img src="${prop.images[0].image_url}" class="card-img-top" alt="Property image">
+            <div class="card-body">
+              <h5 class="mb-2" id="card-header">₱${Math.round(Number(prop.price))} /mo </h5>
+              
+              <!-- Property details -->
+              <p class="card-text m-0 mb-1">
+                ${prop.category.charAt(0).toUpperCase() +prop.category.slice(1)} <br>
+                <strong>${prop.floor_area}</strong> sqm | <strong>${prop.bedrooms}</strong> bed/s
+              </p>
 
-
-// // Layers
-// let locationLayer;
-// $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
-//   if (locationLayer) {
-//     map.removeLayer(locationLayer);
-//   }
-
-//   let location = L.geoJSON(data, {
-//     pointToLayer: function(feature, latlng) {
-//       return L.circleMarker(latlng, {
-//         color: "white",
-//         fillColor: "purple",
-//         fillOpacity: 1,
-//         fill: true,
-//         radius: 6,
-//         interactive: true
-//       })
-//     },
-//     onEachFeature: function(feature, layer) {
-//       layer.bindPopup(
-//         `
-//         <div class="card shadow border-0" style="width: 100%; max-width: 18rem;">
-//           <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" class="card-img-top img-fluid" alt="Preview image">
-//               <div class="card-body">
-//                 <h5 class="mb-2" id="card-header">₱${feature.properties.rent_per_month}/month</h5>
-//                 <p class="m-0 mb-1" id="card-text-1"> <strong> ${feature.properties.type} </strong> | <strong> 
-//                   ${feature.properties.area_sqm}</strong> sqm  | <strong>${feature.properties.no_rooms}</strong> bed/s</p>
-//                 <p class="m-0" id="card-text-2"> ${feature.properties.address}</p>
-//               </div>
-            
-//             <button class="btn btn-primary open-modal-btn w-100" data-id="${feature.properties.id}">View Details</button>
-//           </div>
-//         </div>
-//         `
-//       );
-
-//       layer.on({
-//         mouseover: function(e) {
-//           e.target.setStyle({
-//             fillColor: "green",
-//             radius: 8
-//           });
-//         },
-//         mouseout: function(e) {
-//           e.target.setStyle({
-//             fillColor: "purple",
-//             radius: 6
-//           });
-//         },
-//       });
-//     }
-//   }).addTo(map)
-// });
-
-// $.getJSON('http://127.0.0.1:8000/boundary-data/', function(data) {
-//   let boundary = L.geoJSON(data, {
-//     style: {
-//       color: "black",
-//       fillOpacity: 0,
-//       weight: 1,
-//       dashArray: '2,4'
-//     },
-//     interactive: false
-//   }).addTo(map);
-//   map.fitBounds(boundary.getBounds())
-// })
+              <!-- View Details button -->
+              <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
+            </div>
+          </div>
+          `,
+        );
 
 
-// // Basemaps
-// let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
-//   maxZoom: 19,
-// }).addTo(map);
-
-// let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
-//     maxZoom: 19,
-// })
+      layer.on({
+        mouseover: function(e) {
+          e.target.setStyle({
+            fillColor: "green",
+            radius: 8
+          });
+        },
+        mouseout: function(e) {
+          e.target.setStyle({
+            fillColor: "purple",
+            radius: 6
+          });
+        },
+      });
+    }
+  }).addTo(map)
+   map.fitBounds(location.getBounds(), {
+    maxZoom: 7,
+    padding: [50, 50]
+   })
+});
 
 
 
-// var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-// 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-// 	subdomains: 'abcd',
-// 	maxZoom: 20
-// });
 
-// let basemaps = {
-//   "Satellite": satellite,
-//   "Terrain": terrain,
-//   "Voyager": CartoDB_Voyager,
-// }
+// Basemaps
+let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
+  maxZoom: 22,
+}).addTo(map);
 
 
-// L.control.layers(basemaps, null, {
-//   position: 'bottomright'
-// }).addTo(map);
+let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
+    maxZoom: 22,
+})
 
-// L.control.zoom({
-//   position: 'topright'
-// }).addTo(map);
+var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 22
+});
 
-// //Print
-// L.easyPrint({	
-//   title: 'Print',
-// 	position: 'topright',
-//   exportOnly: true,
-//   hideControlContainer: true,
-//   filename: 'homify-map',
-// }).addTo(map);
+var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+});
+
+let basemaps = {
+  "Road": terrain,
+  "Satellite": satellite,
+  "OSM": OpenStreetMap_HOT,
+}
+
+L.control.layers(basemaps, null, {
+  position: 'bottomright'
+}).addTo(map);
+
+L.control.zoom({
+  position: 'topright'
+}).addTo(map);
+
+//Print
+L.easyPrint({	
+  title: 'Print',
+	position: 'topright',
+  exportOnly: true,
+  hideControlContainer: true,
+  filename: 'homify-map',
+}).addTo(map);
 
 
 
