@@ -25,6 +25,12 @@ ALLOWED_HOSTS = [
     "localhost",           
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://topmapsolutions.com',
+    'https://www.topmapsolutions.com',
+    'https://www.homify.topmapsolutions.com'
+]
+
 # Application definition
 
 INSTALLED_APPS = [
