@@ -18,8 +18,12 @@ SECRET_KEY = "django-insecure-eo_)0o^)asdl-@(fi)x1z*mm5ixlz5%i^$m-#hd3e_5!zm_g&w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "homify.topmapsolutions.com",  
+    "topmapsolutions.com",       
+    "127.0.0.1",               
+    "localhost",           
+]
 
 # Application definition
 
