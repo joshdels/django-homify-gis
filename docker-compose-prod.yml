@@ -6,6 +6,8 @@ services:
     working_dir: /app
     volumes:
       - ./homify:/app
+      - /root/myapps/homify_staticfiles:/app/staticfiles
+      - /root/myapps/homify_media:/app/media
     command: ["gunicorn", "homify_project.wsgi:application", "--bind", "0.0.0.0:8000"]
     ports:
       - "8001:8000"
@@ -25,3 +27,5 @@ services:
 
 volumes:
   postgres_data_homify:
+
+  
