@@ -6,7 +6,7 @@ services:
     working_dir: /app
     volumes:
       - ./homify:/app
-    command: ["gunicorn", "homify_project.wsgi:application", "--bind", "0.0.0.0:8000"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
     ports:
       - "8001:8000"
     depends_on:

@@ -28,6 +28,7 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://topmapsolutions.com',
     'https://www.topmapsolutions.com',
+    'https://homify.topmapsolutions.com',
     'https://www.homify.topmapsolutions.com'
 ]
 

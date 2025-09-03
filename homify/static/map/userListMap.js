@@ -3,7 +3,7 @@ let map = L.map("map", {
 }).setView([12.8797, 121.7740], 6);
 
 // Layers
-$.getJSON("http://127.0.0.1:8000/map-data/user-properties", function (data) {
+$.getJSON("/map-data/user-properties", function (data) {
   let location = L.geoJSON(data, {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {
