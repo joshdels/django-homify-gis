@@ -1,2 +1,2 @@
-.docker-compose-prod.yml
-nginx\conf.d
+docker-compose-prod.yml
+nginx
