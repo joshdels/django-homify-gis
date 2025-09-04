@@ -3,7 +3,6 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* prevent double scrollbars */
   box-sizing: border-box;
 }
 
@@ -35,6 +34,28 @@ body {
   transform: translateY(-3px);
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Desktop: split map + sidebar */
+@media (min-width: 768px) {
+  #map {
+    height: calc(100vh - 55.5px);
+  }
+  #sidebar {
+    height: calc(100vh - 55.5px);
+    overflow-y: auto;
+  }
+}
+
+/* Mobile: map on top, listings scroll below */
+@media (max-width: 767px) {
+  #map {
+    height: 300px; /* fixed height map */
+  }
+  #sidebar {
+    height: auto;      /* let it grow */
+    overflow-y: visible;
+  }
 }
 
 
