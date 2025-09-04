@@ -1,5 +1,6 @@
 let map = L.map('map', {
-  zoomControl: false
+  zoomControl: false,
+  gestureHandling: true,
 }).setView([51.505, -0.09], 13);
 
 // Layers
@@ -103,14 +104,38 @@ L.control.zoom({
   position: 'topright'
 }).addTo(map);
 
-//Print
-L.easyPrint({	
-  title: 'Print',
-	position: 'topright',
-  exportOnly: true,
-  hideControlContainer: true,
-  filename: 'homify-map',
-}).addTo(map);
+
+
+
+// Add Utils Leaflet
+var legend = L.Control.extend({
+  options: {
+    position: 'bottomleft',
+  },
+
+  onAdd: function(map) {
+    var div = L.DomUtil.create("div", "info-legend");
+
+    div.innerHTML = `
+      <h6 style="margin:0 0 5px 0; font-weight:bold;">
+        <i style="background: purple; width: 18px; height: 18px; display:inline-block; margin-right:5px; border-radius: 50%"></i>
+        Properties
+      </h6>
+      <p style="margin:0; font-size:12px; font-style:italic;">
+        Click on the <span style="color:purple;">purple circles</span> <br>
+        to view information
+      </p>
+    `;
+
+    L.DomEvent.disableClickPropagation(div); 
+    return div;
+  }
+});
+
+map.addControl(new legend());
+
+
+
 
 
 

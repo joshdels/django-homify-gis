@@ -15,6 +15,9 @@
     <!-- Geoman.drawing -->
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+    <!-- gesture -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.css" />
+    <script src="https://unpkg.com/leaflet-gesture-handling"></script>
     
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
 
@@ -55,15 +58,10 @@
             </li>
             {% endif %}
             <!-- About Dropdown -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                About
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Mission & Vision</a></li>
-                <li><a class="dropdown-item" href="#">Contact</a></li>
-              </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact_page' %}">Contact Us</a>
             </li>
+        
           </ul>
 
           <!-- Right Links / Auth -->

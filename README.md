@@ -27,6 +27,8 @@ This is a webgis project with total CRUD (Create, Read, Update, Delete) Features
 - JavaScript / Leaflet
 - HTML / CSS / Bootstrap
 - PostGIS
+- Docker
+- nginx
 
 ---
 

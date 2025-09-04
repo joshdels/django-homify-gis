@@ -4,7 +4,7 @@ let map = L.map("map", {
 
 // // Layers
 // let locationLayer;
-// $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
+// $.getJSON('http://127.0.0.1:8001/location-data/', function(data) {
 //   if (locationLayer) {
 //     map.removeLayer(locationLayer);
 //   }

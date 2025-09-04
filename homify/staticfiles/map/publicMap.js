@@ -1,10 +1,11 @@
 let map = L.map('map', {
-  zoomControl: false
+  zoomControl: false,
+  gestureHandling: true,
 }).setView([51.505, -0.09], 13);
 
 // Layers
 let locationLayer;
-$.getJSON('http://127.0.0.1:8001/map-data/all-properties', function(data) {
+$.getJSON('/map-data/all-properties', function(data) {
   if (locationLayer) {
     map.removeLayer(locationLayer);
   }
@@ -112,7 +113,18 @@ L.easyPrint({
   filename: 'homify-map',
 }).addTo(map);
 
+// Add Utils Leaflet
+var MyPanel = L.Control.extend({
+  onAdd: function(map) {
+    var div = L.DomUtil.create('div', 'my-panel');
+    div.innerHTML = "hello world";
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  }
+});
 
+// Add instance of the control
+map.addControl(new MyPanel({ position: 'topright' }));
 
 
 

@@ -59,7 +59,6 @@ body {
 }
 
 
-
 .leaflet-popup-close-button {
   background-color: blue;       /* your desired color */
   opacity: 0.8;
@@ -76,6 +75,36 @@ body {
   opacity: 1;
   transform: scale(1.2);
 }
+
+
+/* Leaflet control container style */
+.info-legend {
+  background: white;
+  bottom: 15px;
+  left: 10px;
+  padding: 20px 20px;
+  font: 14px/16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border-radius: 4px;
+  line-height: 18px;
+  color: #333;
+  z-index: 5000
+}
+
+#listing-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 0.5rem; 
+}
+
+#listing-features .card {
+  background-color: rgb(238, 238, 238);
+  border-color: rgb(238, 238, 238); 
+  text-align: center;
+}
+
+
+
 
 
 
