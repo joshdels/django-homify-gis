@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="p-5 bg-white rounded-3 shadow-sm text-center">
+        <h1 class="display-4 fw-bold mb-3">New and Updates</h1>
+        <p class="lead mb-4">Stay updated with the latest news, trends, and tips to find your perfect home.</p>
+        <a class="btn btn-primary btn-lg px-4" href="{% url 'post_list' %}">View All Updates</a>
+    </div>
+</div>
+
+{% endblock content %}

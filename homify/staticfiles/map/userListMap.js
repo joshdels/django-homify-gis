@@ -23,20 +23,20 @@ $.getJSON("/map-data/user-properties", function (data) {
         `
       );
 
-      // layer.on({
-      //   mouseover: function(e) {
-      //     e.target.setStyle({
-      //       fillColor: "green",
-      //       radius: 8
-      //     });
-      //   },
-      //   mouseout: function(e) {
-      //     e.target.setStyle({
-      //       fillColor: "purple",
-      //       radius: 6
-      //     });
-      //   },
-      // });
+      layer.on({
+        mouseover: function(e) {
+          e.target.setStyle({
+            fillColor: "green",
+            radius: 8
+          });
+        },
+        mouseout: function(e) {
+          e.target.setStyle({
+            fillColor: "purple",
+            radius: 6
+          });
+        },
+      });
     },
   }).addTo(map);
      map.fitBounds(location.getBounds(), {
@@ -46,21 +46,21 @@ $.getJSON("/map-data/user-properties", function (data) {
     )
 });
 
-$.getJSON("/boundary-data/", function (data) {
-  let boundary = L.geoJSON(data, {
-    style: {
-      color: "black",
-      fillOpacity: 0,
-      weight: 1,
-      dashArray: "2,4",
-    },
-    interactive: false,
-  }).addTo(map);
-  map.fitBounds(boundary.getBounds(), {
-    maxZoom: 12,
-    padding: [50, 50]
-  });
-});
+// $.getJSON("/boundary-data/", function (data) {
+//   let boundary = L.geoJSON(data, {
+//     style: {
+//       color: "black",
+//       fillOpacity: 0,
+//       weight: 1,
+//       dashArray: "2,4",
+//     },
+//     interactive: false,
+//   }).addTo(map);
+//   map.fitBounds(boundary.getBounds(), {
+//     maxZoom: 12,
+//     padding: [50, 50]
+//   });
+// });
 
 // Basemaps
 let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
@@ -71,7 +71,6 @@ let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={
 let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
     maxZoom: 22,
 })
-
 
 var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	maxZoom: 19,
@@ -126,4 +125,31 @@ L.DomEvent.on(addNewBtn, "click", function (e) {
   });
 });
 
+
+// Add Utils Leaflet
+var legend = L.Control.extend({
+  options: {
+    position: 'bottomleft',
+  },
+
+  onAdd: function(map) {
+    var div = L.DomUtil.create("div", "info-legend");
+
+    div.innerHTML = `
+      <h6 style="margin:0 0 5px 0; font-weight:bold;">
+        <i style="background: purple; width: 18px; height: 18px; display:inline-block; margin-right:5px; border-radius: 50%"></i>
+        Properties
+      </h6>
+      <p style="margin:0; font-size:12px; font-style:italic;">
+        Click on the <span style="color:purple;">purple circles</span> <br>
+        to view information
+      </p>
+    `;
+
+    L.DomEvent.disableClickPropagation(div); 
+    return div;
+  }
+});
+
+map.addControl(new legend());
  

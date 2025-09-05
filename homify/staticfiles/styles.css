@@ -3,7 +3,6 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* prevent double scrollbars */
   box-sizing: border-box;
 }
 
@@ -37,6 +36,28 @@ body {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
+/* Desktop: split map + sidebar */
+@media (min-width: 768px) {
+  #map {
+    height: calc(100vh - 55.5px);
+  }
+  #sidebar {
+    height: calc(100vh - 55.5px);
+    overflow-y: auto;
+  }
+}
+
+/* Mobile: map full screen on top, listings below */
+@media (max-width: 767px) {
+  #map {
+    height: calc(100vh - 55.5px); /* full viewport height minus navbar */
+  }
+  #sidebar {
+    height: auto;       /* let content flow naturally */
+    overflow-y: visible; /* listings scroll with page */
+  }
+}
+
 
 /* Leaflet */
 .leaflet-popup-content-wrapper {
@@ -59,7 +80,6 @@ body {
 }
 
 
-
 .leaflet-popup-close-button {
   background-color: blue;       /* your desired color */
   opacity: 0.8;
@@ -78,14 +98,34 @@ body {
 }
 
 
-/*  Utils */
-.my-panel {
+/* Leaflet control container style */
+.info-legend {
   background: white;
-  padding: 10px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-size: 14px;
+  bottom: 15px;
+  left: 10px;
+  padding: 20px 20px;
+  font: 14px/16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border-radius: 4px;
+  line-height: 18px;
+  color: #333;
+  z-index: 5000
 }
+
+#listing-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 0.5rem; 
+}
+
+#listing-features .card {
+  background-color: rgb(238, 238, 238);
+  border-color: rgb(238, 238, 238); 
+  text-align: center;
+}
+
+
+
 
 
 

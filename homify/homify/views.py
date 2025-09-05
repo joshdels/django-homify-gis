@@ -5,6 +5,10 @@ from .models import Post
 
 class HomePage(TemplateView):
     template_name = 'homepage.html'
+    
+    
+class NewsPage(TemplateView):
+    template_name = 'page_news.html'
 
 
 class ContactPage(TemplateView):

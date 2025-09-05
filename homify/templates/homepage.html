@@ -1,14 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock title %}
-
 {% block content %}
-<div class="container my-5">
-    <div class="p-5 bg-white rounded-3 shadow-sm text-center">
-        <h1 class="display-4 fw-bold mb-3">New and Updates</h1>
-        <p class="lead mb-4">Stay updated with the latest news, trends, and tips to find your perfect home.</p>
-        <a class="btn btn-primary btn-lg px-4" href="{% url 'post_list' %}">View All Updates</a>
+<div class="container-fluid" id="">
+  <div class="row g-4">
+    <!-- Buyers / Renters -->
+    <div class="col-md-6">
+      <div class="p-5 bg-white rounded-3 shadow-sm text-center h-100 border border-2">
+          <h1 class="fw-bold mb-5">Find Your Dream Home</h1>
+          <p class="lead mb-4 text-muted">
+            Explore thousands of listings, stay ahead with the latest market trends, 
+            and discover homes tailored to your lifestyle.  
+          </p>
+          <a class="btn btn-primary btn-lg px-4 fw-semibold" href="{% url 'listing_cardlist' %}">
+            Browse Homes
+          </a>
+      </div>
     </div>
+
+    <!-- Owners -->
+    <div class="col-md-6">
+      <div class="p-5 bg-white rounded-3 shadow-sm text-center h-100 border border-2">
+          <h1 class="fw-bold mb-4">List Your Property</h1>
+          <p class="lead mb-4 text-muted">
+            Reach motivated buyers & renters faster. Showcase your property with ease 
+            and maximize your selling or rental potential.  
+          </p>
+          <a class="btn btn-success btn-lg px-4 fw-semibold" href="{% url 'listing_user' %}">
+            Start Listing
+          </a>
+      </div>
+    </div>
+  </div>
 </div>
 
-{% endblock content %}
+
+
+{% endblock content%}
+
+{% include 'footer.html' %}
