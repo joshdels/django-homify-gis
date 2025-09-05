@@ -46,21 +46,6 @@ $.getJSON("/map-data/user-properties", function (data) {
     )
 });
 
-// $.getJSON("/boundary-data/", function (data) {
-//   let boundary = L.geoJSON(data, {
-//     style: {
-//       color: "black",
-//       fillOpacity: 0,
-//       weight: 1,
-//       dashArray: "2,4",
-//     },
-//     interactive: false,
-//   }).addTo(map);
-//   map.fitBounds(boundary.getBounds(), {
-//     maxZoom: 12,
-//     padding: [50, 50]
-//   });
-// });
 
 // Basemaps
 let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
