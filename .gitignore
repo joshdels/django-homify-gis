@@ -2,3 +2,4 @@ docker-compose-prod.yml
 nginx
 homify/db.sqlite3
 test
+homify/media

@@ -1,5 +1,5 @@
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top border-bottom">
       <div class="container">
         <!-- Brand / Logo -->
         <a class="navbar-brand fw-bold" href="{% url 'homepage' %}">🏠 Homify</a>
@@ -19,7 +19,7 @@
               <a class="nav-link" href="{% url 'news_page' %}">News</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'listing_cardlist' %}">Maps</a>
+              <a class="nav-link" href="{% url 'listing_cardlist' %}">Listings</a>
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item">

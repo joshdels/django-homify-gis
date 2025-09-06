@@ -1,25 +1,30 @@
+:root {
+  --navbar-height: 55px; /* adjust after checking actual navbar height */
+}
+
 /* Reset html and body */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Adjust for fixed navbar */
 body {
-  padding-top: 55.5px; /* match navbar height */
+  padding-top: var(--navbar-height);
 }
 
 /* Full-height map and sidebar */
 #map{
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
     position: relative;
 }
 
 /* Sidebar scroll if content is taller than viewport */
 #sidebar {
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   overflow-y: auto;
 }
 
@@ -29,10 +34,10 @@ body {
 /* Desktop: split map + sidebar */
 @media (min-width: 768px) {
   #map {
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
   }
   #sidebar {
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
   }
 }
@@ -40,11 +45,11 @@ body {
 /* Mobile: map full screen on top, listings below */
 @media (max-width: 767px) {
   #map {
-    height: calc(100vh - 55.5px); /* full viewport height minus navbar */
+    height: calc(100vh - var(--navbar-height));
   }
   #sidebar {
-    height: auto;       /* let content flow naturally */
-    overflow-y: visible; /* listings scroll with page */
+    height: auto;     
+    overflow-y: visible; 
   }
 }
 
@@ -102,6 +107,20 @@ body {
   z-index: 5000
 }
 
+.leaflet-control {
+    z-index: 500;   
+}
+
+#search-panel {
+    position: relative;
+    z-index: 1050; /* Bootstrap dropdowns default z-index ~1050 */
+}
+
+/* Bootstrap dropdown menu */
+#search-panel .dropdown-menu {
+    z-index: 2000 !important; /* make sure it is above leaflet controls */
+}
+
 #listing-features {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
@@ -113,6 +132,11 @@ body {
   border-color: rgb(238, 238, 238); 
   text-align: center;
 }
+
+
+
+
+
 
 
 

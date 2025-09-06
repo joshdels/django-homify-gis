@@ -5,9 +5,22 @@
 
 {% block content %}
 
-<div class="container-fluid p-0">
+<style>
+:root {
+  --navbar-height: 55px;
+  --search-panel-height: 70px !important; 
+}
+
+</style>
+
+<!-- content -->
+<div class="p-0">
+  <div class="row">
+      {% include 'listings/listings_search_panel.html' %}
+  </div>
+
   <div class="row g-0">
-    <!-- Row with fixed height -->
+    
 
     <!-- LEFT: Map -->
     <div class="col-12 col-md-6 p-0" id="map" style="background-color: black;">
@@ -16,12 +29,11 @@
 
     <!-- RIGHT: Property Cards -->
     <div
-      class="col-12 col-md-6 p-3 d-flex flex-column"
+      class="col-12 col-md-6 p-3 d-flex flex-column container-fluid"
       id="sidebar"
     >
-      <div class="mb-4 border-bottom pb-2">
-        <span class="fw-bold fs-5 mb-1">📋 Listing</span>
-        <p class="text-muted fs-6 mb-0 text-sm">
+      <div class="mb-4 pb-2">
+        <p class="text-bold fs-6 text-sm">
           Available properties: {{ properties|length }} units
         </p>
       </div>
