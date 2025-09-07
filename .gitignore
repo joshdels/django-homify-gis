@@ -3,3 +3,5 @@ nginx
 homify/db.sqlite3
 test
 homify/media
+__pycache__
+/__pycache__

@@ -4,8 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import PropertySerializer
 from listings.models import Property
+import json
 
-@api_view(["GET"])
+
+@api_view(["GET", "POST"])
 def PropertyAllListing(request):
   try: 
     swLat = float(request.GET.get("swLat"))
@@ -17,14 +19,39 @@ def PropertyAllListing(request):
   else:
     bbox = Polygon.from_bbox((swLng, swLat, neLng, neLat))
     properties = Property.objects.filter(geom__within=bbox)
-    
+  
+  # filters  
+  # if request.method == "POST":
+  #   try: 
+  #     data = json.loads(request.body)
+      
+  #     price_min = data.get("price_min", 0)
+  #     price_max = data.get("price_max", 99999999999)
+  #     amenities = data.get("amenities", [])
+      
+  #     properties = properties.filter(price__gte=price_min, price__lte=price_max)
+      
+  #     if amenities:
+  #       properties = properties.filter(amenities__name__in=amenities).distinct()
+        
+  #   except (json.JSONDecodeError, TypeError, ValueError):
+  #     return Response({"error": "Invalid JSON"}, status=400)
+      
   serializer = PropertySerializer(properties, many=True, context={"request": request})
   return Response(serializer.data)
+
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def PropertyUserListing(request):
   properties = Property.objects.filter(owner=request.user)
+  serializer = PropertySerializer(properties, many=True, context={"request": request})
+  return Response(serializer.data)
+
+
+@api_view(["GET"])
+def SinglePropertyListing(request):
+  properties = Property.objects.filter(owner=id)
   serializer = PropertySerializer(properties, many=True, context={"request": request})
   return Response(serializer.data)
 

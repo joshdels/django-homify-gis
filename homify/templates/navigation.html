@@ -1,8 +1,10 @@
-    <!-- Navbar -->
+  {% load static %}
+   <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top border-bottom">
       <div class="container">
         <!-- Brand / Logo -->
-        <a class="navbar-brand fw-bold" href="{% url 'homepage' %}">🏠 Homify</a>
+        <a class="navbar-brand fw-bold" href="{% url 'homepage' %}">
+        <img src="{% static 'imgs/logo_homify.svg' %}" alt="Homify Logo" height="30" class="me-1"> Homify</a>
 
         <!-- Toggler for mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 

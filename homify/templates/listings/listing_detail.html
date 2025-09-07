@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
+{%block title%} Homify | Listing {% endblock title %}
+
+{% load custom_filters %}
+
 {% block content %}
+
 
 <style>
   html, body {
@@ -11,130 +16,106 @@
 
 <div class="container mt-3">
 
-    <div class="container" id="">
-    <a class="text-muted d-block mb-4" href="{% url 'listing_cardlist' %}" style="text-decoration: none">
-      <i class="bi bi-box-arrow-left"></i>
-      back to search
+  <!-- Back Link -->
+  <div class="mb-3">
+    <a class="text-muted d-block" href="{% url 'listing_cardlist' %}" style="text-decoration: none">
+      <i class="bi bi-box-arrow-left"></i> Back to search
     </a>
   </div>
 
   <!-- Horizontal scroll images -->
-    <div class="d-flex overflow-auto mb-2" style="gap:1rem;" id="listing-img">
-      {% for img in properties.images.all %}
-        <div class="flex-shrink-0">
-          <img src="{{ img.image.url }}" class="rounded" style="height:200px; width:auto;" alt="{{ img.caption|default:'Property image' }}">
-          {% if img.caption %}
-            <small class="d-block text-center">{{ img.caption }}</small>
-          {% endif %}
-        </div>
-      {% empty %}
-        <div class="flex-shrink-0">
-          <img src="https://via.placeholder.com/300x200" class="rounded" alt="No image">
-        </div>
-      {% endfor %}
-    </div>
-
-   <!-- Property Title -->
-    <div class="container mb-2" id="top-content">
-      <div class="row">
-        <div class="col-6">
-          <h1 class="">₱ {{ properties.price|floatformat:0 }}</h1>
-          <h5 class="mb-3 text-muted">{{ properties.address }}</h5>
-        </div>
-        <div class="col-6">
-          <div class="row">
-            <h5 class="card-title">{{ properties.property_type|title }}</h5>
-          </div>
-          <div class="row">
-            <div class="col">
-              <span class="me-5">{{ properties.bedrooms }} Beds</span>
-            </div>
-            <div class="col">
-              <span class="">{{ properties.bathrooms }} Baths</span>
-            </div>
-            <div class="col">
-              <span class="">{{ properties.floor_area|floatformat:0 }} sq.m</span>
-            </div>
-          </div>
-        </div>
+  <div class="d-flex overflow-auto mb-2" style="gap:1rem;" id="listing-img">
+    {% for img in properties.images.all %}
+      <div class="flex-shrink-0">
+        <img src="{{ img.image.url }}" class="rounded" style="height:200px; width:auto;" 
+             alt="{{ img.caption|default:'Property image' }}">
+        {% if img.caption %}
+          <small class="d-block text-center">{{ img.caption }}</small>
+        {% endif %}
       </div>
-    </div>
-
-    <hr>
-
-    <div class="mb-2" id="listing-features">
-      <div class="card p-2 mb-2">
-        Feature 1
+    {% empty %}
+      <div class="flex-shrink-0">
+        <img src="https://via.placeholder.com/300x200" class="rounded" alt="No image">
       </div>
-      <div class="card p-2 mb-2">
-        Feature 1
-      </div>
-      <div class="card p-2 mb-2">
-        Feature 1
-      </div>
-      <div class="card p-2 mb-2">
-        Feature 1
-      </div>
-      <div class="card p-2 mb-2">
-        Feature 1
-      </div>
-    </div>
-      <p class="text-muted">   Contact manager for more details about this home. </p>
-
-      <hr>
-
-
-
-    <div class="mb-2"id=main-detail>
-
-    </div>
-
-    <div class="mb-2" id="info-user">
-      <div class="row mb-2 mt-2">
-        <h5>Information</h5>
-      </div>
-      <div class="row">
-        <div class="col-1">
-          <div class="d-flex align-items-center mb-3">
-            <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" 
-                alt="Owner logo" 
-                class="rounded-circle me-3 img-fluid"
-                style="width:60px; height:60px; object-fit:cover;">
-          </div></div>
-        <div class="col-11">
-          <p class="mb-0"><strong>{{ properties.owner.username|title }}</strong></p>
-          <small class="text-muted">Contact: {{ properties.owner.email }}</small>
-        </div>
-      </div>
-      <div class="row">
-        <button class="btn btn-primary">Contact Me</button>
-      </div>
-    </div>
-
-    <div class="contianer" id="listing-detail-map">
-      This is map
-    </div>
-
-    <!-- Property Details -->
-    <div class="">
-      <div class="">
-        <p class="card-text mb-2">
-        </p>
-asdfasdf
-        <p>{{ properties.description }}</p>
-
-
-      </div>
+    {% endfor %}
   </div>
 
+  <!-- Property Title & Basic Info -->
+  <div class="container mb-2" id="top-content">
+    <div class="row">
+      <div class="col-6">
+        <h5 class="mb-3 text-muted">{{ properties.address }}</h5>
+      </div>
+      
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Listing Features -->
+  <div class="mb-2" id="listing-features">
+    {% comment %} Replace placeholders with dynamic features if available {% endcomment %}
+    <div class="card p-2 mb-2">Feature 1</div>
+    <div class="card p-2 mb-2">Feature 2</div>
+    <div class="card p-2 mb-2">Feature 3</div>
+  </div>
+
+  <p class="text-muted">Contact manager for more details about this home.</p>
+  <hr>
+
+  <!-- Price -->
+  <div>
+    <div class="row">
+      <div class="col-6">
+        <h5 class="card-title">{{ properties.property_type|underscore_to_space|title }}</h5>
+        <h5>₱ {{ properties.price|floatformat:0 }}</h5>
+      </div>
+      <div class="col-6">
+          <div class="row">
+            <div class="col">
+              <span class="me-3">{{ properties.bedrooms }} Beds</span>
+            </div>
+            <div class="col">
+              <span>{{ properties.floor_area|floatformat:0 }} sq.m</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <hr>
+
+  <!-- Main Detail Placeholder -->
+  <div class="mb-2" id="main-detail"></div>
+
+  <!-- Owner Info -->
+  <div class="mb-2" id="info-user">
+    <h5 class="mb-2 mt-2">Listed by</h5>
+    <div class="row mb-3">
+      <div class="col-1 d-flex align-items-center">
+        <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" 
+             alt="Owner logo" 
+             class="rounded-circle me-3 img-fluid" style="width:60px; height:60px; object-fit:cover;">
+      </div>
+      <div class="col-11">
+        <p class="mb-0"><strong>{{ properties.owner.username|title }}</strong></p>
+        <small class="text-muted">Contact: {{ properties.owner.email }}</small>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary">Contact Me</button>
+    </div>
+  </div>
+
+  <!-- Map Placeholder -->
+  <div class="container mb-3" id="listing-detail-map">
+    This is map
+  </div>
+
+  <!-- Property Description -->
+  <div class="mb-3">
+    <p>{{ properties.description }}</p>
   </div>
 
 </div>
 
-
 {% endblock content %}
-
-
-
-
-

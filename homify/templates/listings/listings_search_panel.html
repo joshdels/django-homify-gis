@@ -1,4 +1,5 @@
-<div class="container-fluid border-bottom py-2">
+{% load static %}
+<div class="container-fluid border-bottom py-2 ps-3 pe-3">
   <div class="row justify-content-center gx-0">
     <div class="col-12 col-lg-10">
 
@@ -6,8 +7,13 @@
       <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
 
         <!-- Search box -->
-        <div class="flex-grow-1 flex-shrink-1" style="min-width: 200px; max-width: 380px;">
-          <input type="text" class="form-control" placeholder="Location">
+        <div class="flex-grow-1" style="min-width: 200px; max-width: 280px;">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Location">
+            <button class="btn btn-outline-secondary" type="button" id="submitButtonDesktop">
+            <i class="bi bi-search"></i>
+            </button>
+          </div>
         </div>
 
         <!-- Desktop Filters -->
@@ -17,8 +23,11 @@
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
               Price
             </button>
-            <div class="dropdown-menu p-3" style="min-width: 200px;">
-              <input type="range" class="form-range mt-2" id="priceMax" min="0" max="5000000" step="50000" value="5000000">
+            <div class="dropdown-menu p-3" style="min-width: 250px;">
+              <div class="range-container">
+                <input type="range" class="form-range mt-2" id="rangeMin" min="0" max="5000000" step="50000" value="0">
+                <input type="range" class="form-range mt-2" id="rangeMax" min="0" max="5000000" step="50000" value="5000000">
+              </div>
               <div class="d-flex justify-content-between mt-1">
                 <span id="selectedMin">₱0</span>
                 <span id="selectedMax">₱5,000,000</span>
@@ -32,9 +41,24 @@
               Type
             </button>
             <ul class="dropdown-menu p-2" style="min-width: 180px;">
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="typeHouse"><label class="form-check-label" for="typeHouse">House</label></div></li>
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="typeCondo"><label class="form-check-label" for="typeCondo">Condo</label></div></li>
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="typeLot"><label class="form-check-label" for="typeLot">Lot</label></div></li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeHouse" value="House">
+                  <label class="form-check-label" for="typeHouse">House</label>
+                </div>
+              </li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeCondo" value="Condo">
+                  <label class="form-check-label" for="typeCondo">Condo</label>
+                </div>
+              </li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeLot" value="Lot">
+                  <label class="form-check-label" for="typeLot">Lot</label>
+                </div>
+              </li>
             </ul>
           </div>
 
@@ -44,23 +68,33 @@
               Amenities
             </button>
             <ul class="dropdown-menu p-2" style="min-width: 180px;">
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="wifi"><label class="form-check-label" for="wifi">Wifi</label></div></li>
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="parking"><label class="form-check-label" for="parking">Parking</label></div></li>
-              <li><div class="form-check"><input class="form-check-input" type="checkbox" id="ownCR"><label class="form-check-label" for="ownCR">Own CR</label></div></li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="wifi" value="Wifi">
+                  <label class="form-check-label" for="wifi">Wifi</label>
+                </div>
+              </li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="parking" value="Parking">
+                  <label class="form-check-label" for="parking">Parking</label>
+                </div>
+              </li>
+              <li>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="ownCR" value="CR">
+                  <label class="form-check-label" for="ownCR">Own CR</label>
+                </div>
+              </li>
             </ul>
           </div>
         </div>
 
-        <!-- Search Button -->
-        <button class="btn btn-primary d-none d-md-inline-block">
-          <i class="bi bi-search"></i> Search
-        </button>
 
         <!-- Mobile Filter Button -->
         <button class="btn btn-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFilters">
           <i class="bi bi-funnel"></i> Filters
         </button>
-
       </div>
     </div>
   </div>
@@ -86,17 +120,18 @@
     <hr>
 
     <!-- Type -->
+
     <label class="form-label">Type</label>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="typeHouseMobile">
+      <input class="form-check-input" type="checkbox" id="typeHouseMobile" value="House">
       <label class="form-check-label" for="typeHouseMobile">House</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="typeCondoMobile">
+      <input class="form-check-input" type="checkbox" id="typeCondoMobile" value="Condo">
       <label class="form-check-label" for="typeCondoMobile">Condo</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="typeLotMobile">
+      <input class="form-check-input" type="checkbox" id="typeLotMobile" value="Lot">
       <label class="form-check-label" for="typeLotMobile">Lot</label>
     </div>
 
@@ -105,18 +140,18 @@
     <!-- Amenities -->
     <label class="form-label">Amenities</label>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="wifiMobile">
+      <input class="form-check-input" type="checkbox" id="wifiMobile" value="Wifi">
       <label class="form-check-label" for="wifiMobile">Wifi</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="parkingMobile">
+      <input class="form-check-input" type="checkbox" id="parkingMobile" value="parking">
       <label class="form-check-label" for="parkingMobile">Parking</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="ownCRMobile">
+      <input class="form-check-input" type="checkbox" id="ownCRMobile" valye="Own CR ">
       <label class="form-check-label" for="ownCRMobile">Own CR</label>
     </div>
 
-    <button class="btn btn-primary mt-3 w-100" data-bs-dismiss="offcanvas">Apply Filters</button>
+    <button class="btn btn-primary mt-3 w-100" data-bs-dismiss="offcanvas" id="submitButtonMobile">Apply Filters</button>
   </div>
 </div>

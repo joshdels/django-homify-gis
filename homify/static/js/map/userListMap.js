@@ -17,11 +17,31 @@ $.getJSON("/map-data/user-properties", function (data) {
       });
     },
     onEachFeature: function (feature, layer) {
-      layer.bindPopup(
-        `
-        <p> Hello Private Users</p> 
-        `
-      );
+      const prop = feature.properties;
+
+      function displayValue(value) {
+        if (value === null || value === undefined) return "--";
+        if (typeof value === "string") {
+          let v = value.trim().toLowerCase();
+          if (v === "null" || v === "undefined" || v === "") return "--";
+        }
+        return value;
+      }
+
+      layer.bindPopup(`
+        <div class="card">
+            <img src="${prop.images[0]?.image_url || ''}" class="card-img-top" alt="Property image">
+            <div class="card-body">
+                <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
+                <p class="card-text m-0 mb-1">
+                    ${prop.category.charAt(0).toUpperCase() + prop.category.slice(1)} <br>
+                      <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                      <strong>${displayValue(prop.bedrooms)}</strong> bed/s
+                </p>
+                <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
+            </div>
+        </div>
+      `);
 
       layer.on({
         mouseover: function(e) {

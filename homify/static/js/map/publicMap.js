@@ -7,7 +7,7 @@ let map = L.map('map', {
 // Basemaps
 let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', { maxZoom: 22 }).addTo(map);
 let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', { maxZoom: 22 });
-let OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { maxZoom: 19 });
+let OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { maxZoom: 22 });
 
 let basemaps = { "Road": terrain, "Satellite": satellite, "OSM": OpenStreetMap_HOT };
 L.control.layers(basemaps, null, { position: 'bottomright' }).addTo(map);
@@ -56,6 +56,7 @@ function fetchProperties() {
         swLng: sw.lng,
         neLat: ne.lat,
         neLng: ne.lng
+        
     }, function(data) {
         // Remove old layer and reset markerMap
         if (locationLayer) map.removeLayer(locationLayer);
@@ -77,6 +78,15 @@ function fetchProperties() {
                 markerMap[prop.id] = markerMap[prop.id] || [];
                 markerMap[prop.id].push(layer);
 
+                function displayValue(value) {
+                    if (value === null || value === undefined) return "--";
+                    if (typeof value === "string") {
+                        let v = value.trim().toLowerCase();
+                        if (v === "null" || v === "undefined" || v === "") return "--";
+                    }
+                    return value;
+                }
+
                 layer.bindPopup(`
                     <div class="card">
                         <img src="${prop.images[0]?.image_url || ''}" class="card-img-top" alt="Property image">
@@ -84,7 +94,8 @@ function fetchProperties() {
                             <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
                             <p class="card-text m-0 mb-1">
                                 ${prop.category.charAt(0).toUpperCase() + prop.category.slice(1)} <br>
-                                <strong>${prop.floor_area}</strong> sqm | <strong>${prop.bedrooms}</strong> bed/s
+                                 <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                                 <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                             </p>
                             <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
                         </div>
@@ -133,7 +144,7 @@ function renderPropertyList(features) {
               <div class="card-body flex-grow-1">
                 <h5 class="card-title text-truncate">${prop.description || 'No description'}</h5>
                 <p class="mb-2 small">
-                  ${prop.category} | ${prop.property_type || ''}
+                  ${prop.category} | ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''}
                 </p>
                 <p class="fw-bold mb-0">₱${Math.round(Number(prop.price))}</p>
               </div>

@@ -1,7 +1,7 @@
 {% extends 'base_v2.html' %} 
 {% load static %} 
 
-{% block title %}Map{% endblock title %}
+{% block title %} Homify | All Listings{% endblock title %}
 
 {% block content %}
 
@@ -64,6 +64,8 @@
   }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'map/publicMap.js' %}"></script>
+<script src="{% static 'js/functions/filter.js' %}"></script>
+
+<script src="{% static 'js/map/publicMap.js' %}"></script>
 
 {% endblock content %}
