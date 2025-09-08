@@ -53,6 +53,12 @@ body {
   }
 }
 
+@media (max-width: 576px) {
+  #listing-img img {
+    height: 150px; /* smaller images on phones */
+  }
+}
+
 
 /* Leaflet */
 .leaflet-popup-content-wrapper {
@@ -110,6 +116,20 @@ body {
 .leaflet-control {
     z-index: 500;   
 }
+
+/* Fullscreen Leaflet */
+.leaflet-control-fullscreen a::before {
+  font-family: "bootstrap-icons" !important;
+  content: "\f3e9";  /* Unicode for `bi-fullscreen` */
+  font-size: 18px;
+  display: inline-block;
+  color: #333; /* adjust to match your theme */
+}
+
+.leaflet-control-fullscreen a.leaflet-fullscreen-on::before {
+  content: "\f2d0";  /* Unicode for `bi-fullscreen-exit` */
+}
+
 
 #search-panel {
     position: relative;

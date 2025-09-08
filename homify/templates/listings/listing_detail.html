@@ -1,121 +1,126 @@
 {% extends 'base.html' %}
-
-{%block title%} Homify | Listing {% endblock title %}
-
+{% block title %}Homify | Listing{% endblock title %}
 {% load custom_filters %}
 
 {% block content %}
-
 
 <style>
   html, body {
     overflow-x: hidden;
     overflow-y: auto;
   }
+
+  #listing-img img {
+    height: 200px;
+    object-fit: cover;
+  }
 </style>
 
-<div class="container mt-3">
+<div class="container mt-3 px-3 px-md-5">
 
   <!-- Back Link -->
   <div class="mb-3">
-    <a class="text-muted d-block" href="{% url 'listing_cardlist' %}" style="text-decoration: none">
-      <i class="bi bi-box-arrow-left"></i> Back to search
+    <a class="text-muted d-inline-flex align-items-center" href="{% url 'listing_cardlist' %}" style="text-decoration: none">
+      <i class="bi bi-box-arrow-left me-1"></i> Back to search
     </a>
   </div>
 
-  <!-- Horizontal scroll images -->
-  <div class="d-flex overflow-auto mb-2" style="gap:1rem;" id="listing-img">
+  <!-- Image Gallery (Horizontal Scroll) -->
+  <div class="d-flex overflow-auto mb-3" style="gap:1rem;" id="listing-img">
     {% for img in properties.images.all %}
-      <div class="flex-shrink-0">
-        <img src="{{ img.image.url }}" class="rounded" style="height:200px; width:auto;" 
-             alt="{{ img.caption|default:'Property image' }}">
+      <div class="flex-shrink-0 text-center">
+        <img src="{{ img.image.url }}" class="rounded shadow-sm" alt="{{ img.caption|default:'Property image' }}">
         {% if img.caption %}
-          <small class="d-block text-center">{{ img.caption }}</small>
+          <small class="d-block text-muted mt-1">{{ img.caption }}</small>
         {% endif %}
       </div>
     {% empty %}
       <div class="flex-shrink-0">
-        <img src="https://via.placeholder.com/300x200" class="rounded" alt="No image">
+        <img src="https://via.placeholder.com/300x200" class="rounded shadow-sm" alt="No image">
       </div>
     {% endfor %}
   </div>
 
-  <!-- Property Title & Basic Info -->
-  <div class="container mb-2" id="top-content">
-    <div class="row">
-      <div class="col-6">
-        <h5 class="mb-3 text-muted">{{ properties.address }}</h5>
+  <div class="row" id="listing-content">
+
+    <!-- LEFT: Property Info -->
+    <div class="col-12 col-lg-9">
+
+      <!-- Address -->
+      <h5 class="mb-3 text-muted">{{ properties.address }}</h5>
+
+      <!-- Features -->
+      <div class="mb-3 d-flex flex-wrap gap-2" id="listing-features">
+        <div class="card p-2 flex-fill text-center">Feature 1</div>
+        <div class="card p-2 flex-fill text-center">Feature 2</div>
+        <div class="card p-2 flex-fill text-center">Feature 3</div>
       </div>
-      
-    </div>
-  </div>
 
-  <hr>
+      <p class="text-muted">Contact manager for more details about this home.</p>
+      <hr>
 
-  <!-- Listing Features -->
-  <div class="mb-2" id="listing-features">
-    {% comment %} Replace placeholders with dynamic features if available {% endcomment %}
-    <div class="card p-2 mb-2">Feature 1</div>
-    <div class="card p-2 mb-2">Feature 2</div>
-    <div class="card p-2 mb-2">Feature 3</div>
-  </div>
-
-  <p class="text-muted">Contact manager for more details about this home.</p>
-  <hr>
-
-  <!-- Price -->
-  <div>
-    <div class="row">
-      <div class="col-6">
-        <h5 class="card-title">{{ properties.property_type|underscore_to_space|title }}</h5>
-        <h5>₱ {{ properties.price|floatformat:0 }}</h5>
-      </div>
-      <div class="col-6">
-          <div class="row">
-            <div class="col">
-              <span class="me-3">{{ properties.bedrooms }} Beds</span>
+      <!-- Price & Quick Info -->
+      <div class="row align-items-center mb-3">
+        <div class="col-12 col-md-6">
+          <h5 class="fw-semibold">{{ properties.property_type|underscore_to_space|title }}</h5>
+          <h4 class="">₱ {{ properties.price|floatformat:0 }}/mo</h4>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="row text-center g-3">
+            <!-- Bedrooms -->
+            <div class="col-6">
+              <span class="d-block h4 mb-0 fw-bold">{{ properties.bedrooms }}</span>
+              <small class="text-muted">Bed/s</small>
             </div>
-            <div class="col">
-              <span>{{ properties.floor_area|floatformat:0 }} sq.m</span>
+            <!-- Floor Area -->
+            <div class="col-6">
+              <span class="d-block h4 mb-0 fw-bold">{{ properties.floor_area|floatformat:0 }}</span>
+              <small class="text-muted">sqm</small>
             </div>
           </div>
         </div>
       </div>
-  </div>
-  <hr>
 
-  <!-- Main Detail Placeholder -->
-  <div class="mb-2" id="main-detail"></div>
+      <hr>
 
-  <!-- Owner Info -->
-  <div class="mb-2" id="info-user">
-    <h5 class="mb-2 mt-2">Listed by</h5>
-    <div class="row mb-3">
-      <div class="col-1 d-flex align-items-center">
-        <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" 
-             alt="Owner logo" 
-             class="rounded-circle me-3 img-fluid" style="width:60px; height:60px; object-fit:cover;">
+      <!-- Main Details -->
+      <div class="mb-3" id="main-detail">
+        <h5>Listing Details</h5>
+        <p>{{ properties.description }}</p>
       </div>
-      <div class="col-11">
-        <p class="mb-0"><strong>{{ properties.owner.username|title }}</strong></p>
-        <small class="text-muted">Contact: {{ properties.owner.email }}</small>
+
+      <!-- Owner Info -->
+      <div class="mb-4" id="info-user">
+        <h5 class="mb-3">Listed by</h5>
+        <div class="d-flex align-items-center mb-3">
+          <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" 
+               alt="Owner logo" 
+               class="rounded-circle me-3" 
+               style="width:60px; height:60px; object-fit:cover;">
+          <div>
+            <p class="mb-1 fw-semibold">{{ properties.owner.username|title }}</p>
+            <small class="text-muted">Contact: {{ properties.owner.email }}</small>
+          </div>
+        </div>
+        <button class="btn btn-primary">Contact Me</button>
+      </div>
+
+      <!-- Map -->
+      <div class="mb-4" id="listing-detail-map">
+        <div class="border rounded p-4 text-center text-muted">Map goes here</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Sidebar Actions -->
+    <div class="col-12 col-lg-3 mt-4 mt-lg-0">
+      <div class="d-flex flex-column border rounded-2 gap-2 p-3 sticky-top" style="top:40px;">
+        <button class="btn btn-primary">Request a Tour</button>
+        <button class="btn btn-outline-secondary">Owner's Detail</button>
       </div>
     </div>
-    <div class="row">
-      <button class="btn btn-primary">Contact Me</button>
-    </div>
-  </div>
 
-  <!-- Map Placeholder -->
-  <div class="container mb-3" id="listing-detail-map">
-    This is map
   </div>
-
-  <!-- Property Description -->
-  <div class="mb-3">
-    <p>{{ properties.description }}</p>
-  </div>
-
 </div>
 
 {% endblock content %}

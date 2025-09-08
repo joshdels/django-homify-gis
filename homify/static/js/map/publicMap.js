@@ -12,6 +12,7 @@ let OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 let basemaps = { "Road": terrain, "Satellite": satellite, "OSM": OpenStreetMap_HOT };
 L.control.layers(basemaps, null, { position: 'bottomright' }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
+L.control.fullscreen({position: 'topright', title: 'View Fullscreen', titleCancel: 'Exit Fullscreen'}).addTo(map);
 
 // Legend
 var legendControl = L.Control.extend({
@@ -93,9 +94,10 @@ function fetchProperties() {
                         <div class="card-body">
                             <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
                             <p class="card-text m-0 mb-1">
-                                ${prop.category.charAt(0).toUpperCase() + prop.category.slice(1)} <br>
-                                 <strong>${displayValue(prop.floor_area)}</strong> sqm | 
-                                 <strong>${displayValue(prop.bedrooms)}</strong> bed/s
+                                ${prop.property_type.replace(/_/g, " ").charAt(0).toUpperCase() + 
+                                prop.property_type.replace(/_/g, " ").slice(1)} <br>
+                                <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                                <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                             </p>
                             <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
                         </div>
@@ -125,13 +127,33 @@ function renderPropertyList(features) {
     listDiv.empty();
 
     if (!features.length) {
-        listDiv.append('<p>No properties in this area.</p>');
+        listDiv.append(`
+        <div class="col-12 mb-3 d-flex justify-content-center">
+            <div class="card shadow-sm border-0 text-center p-4">
+                <h5 class="fw-bold text-danger mb-2">No Properties Found</h5>
+                <p class="text-muted mb-0">
+                    Try zooming out, moving the map, or adjusting your filters.
+                </p>
+            </div>
+        </div>
+        `);
         return;
     }
 
     features.forEach(feature => {
         const prop = feature.properties;
         const id = feature.id
+
+        function displayValue(value) {
+            if (value === null || value === undefined) return "--";
+            if (typeof value === "string") {
+                let v = value.trim().toLowerCase();
+                if (v === "null" || v === "undefined" || v === "") return "--";
+            }
+            return value;
+        }
+
+
         let html = `
         <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex property-card">
           <a href="/listings/${id}" class="w-100 text-decoration-none text-dark">
@@ -142,11 +164,17 @@ function renderPropertyList(features) {
                   style="height: 180px; object-fit: cover;">
 
               <div class="card-body flex-grow-1">
-                <h5 class="card-title text-truncate">${prop.description || 'No description'}</h5>
-                <p class="mb-2 small">
-                  ${prop.category} | ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''}
+                <p class="fw-bold h4 mb-2">₱${Math.round(Number(prop.price))}/mo </p>
+                
+                <p class="small mb-0">
+                  ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''} |
+                  <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                  <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                 </p>
-                <p class="fw-bold mb-0">₱${Math.round(Number(prop.price))}</p>
+                <p class>
+                    ${prop.address}
+                </p> 
+                
               </div>
             </div>
           </a>
@@ -173,3 +201,5 @@ function renderPropertyList(features) {
 // Map events
 map.on('moveend', fetchProperties);
 fetchProperties();
+
+

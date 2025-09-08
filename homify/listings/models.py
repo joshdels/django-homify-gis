@@ -8,18 +8,16 @@ class Property(models.Model):
     description = models.TextField(max_length=500, blank=True)
     
     CATEGORY_CHOICES = [
-        ("residential", "Residential"),
-        ("commercial", "Commercial"),
+        ("rent", "Rent"),
+        ("sell", "Sell"),
     ]
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="residential")
     
     PROPERTY_TYPES = [
         ("house", "House"),
-        ("boarding_hosuse", "Boarding House"),
+        ("boarding_house", "Boarding House"),
         ("apartment", "Apartment"),
         ("condo", "Condominium"),
-        ("lot", "Lot"),
-        ("commercial_lot", "Commercial Lot"),
         ("office", "Office Space"),
     ]
     property_type = models.CharField(max_length=50, choices=PROPERTY_TYPES)
@@ -39,6 +37,7 @@ class Property(models.Model):
         ("for_sale", "For Sale"),
         ("sold", "Sold"),
     ]
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="available")
 
     created_at = models.DateTimeField(auto_now_add=True)

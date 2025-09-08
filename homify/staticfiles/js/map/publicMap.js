@@ -132,6 +132,17 @@ function renderPropertyList(features) {
     features.forEach(feature => {
         const prop = feature.properties;
         const id = feature.id
+
+        function displayValue(value) {
+            if (value === null || value === undefined) return "--";
+            if (typeof value === "string") {
+                let v = value.trim().toLowerCase();
+                if (v === "null" || v === "undefined" || v === "") return "--";
+            }
+            return value;
+        }
+
+
         let html = `
         <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex property-card">
           <a href="/listings/${id}" class="w-100 text-decoration-none text-dark">
@@ -142,11 +153,14 @@ function renderPropertyList(features) {
                   style="height: 180px; object-fit: cover;">
 
               <div class="card-body flex-grow-1">
-                <h5 class="card-title text-truncate">${prop.description || 'No description'}</h5>
-                <p class="mb-2 small">
-                  ${prop.category} | ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''}
+                <p class="fw-bold h4 mb-1">₱${Math.round(Number(prop.price))}/mo </p>
+                
+                <p class="mb-2 small gx-2">
+                  ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''} |
+                  <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                  <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                 </p>
-                <p class="fw-bold mb-0">₱${Math.round(Number(prop.price))}</p>
+                
               </div>
             </div>
           </a>

@@ -24,7 +24,7 @@ class PropertySerializer(GeoFeatureModelSerializer):
         model = Property
         geo_field = "geom"
         fields = (
-            "id", "owner", "category", "property_type", "address", "price",
+            "id", "owner", "category", "property_type", "address", "price", "floor_area",
             "bedrooms", "bathrooms", "status", "image_url", "images"
         )
 
