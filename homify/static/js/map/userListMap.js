@@ -21,33 +21,6 @@ L.control.layers(basemaps, null, { position: "bottomright" }).addTo(map);
 L.control.zoom({ position: "topright" }).addTo(map);
 L.control.fullscreen({ position: "topright", title: "View Fullscreen", titleCancel: "Exit Fullscreen" }).addTo(map);
 
-// ==========================
-// Recenter Button
-// ==========================
-
-
-
-// ==========================
-// Legend
-// ==========================
-let LegendControl = L.Control.extend({
-    options: { position: "bottomleft" },
-    onAdd: function () {
-        let div = L.DomUtil.create("div", "info-legend");
-        div.innerHTML = `
-            <h6 style="margin:0 0 5px 0; font-weight:bold;">
-                <i style="background: purple; width: 18px; height: 18px; display:inline-block; margin-right:5px; border-radius: 50%"></i>
-                Properties
-            </h6>
-            <p style="margin:0; font-size:12px; font-style:italic;">
-                Click on the <span style="color:purple;">purple circles</span> to view information
-            </p>
-        `;
-        L.DomEvent.disableClickPropagation(div);
-        return div;
-    }
-});
-map.addControl(new LegendControl());
 
 // ==========================
 // Utility
