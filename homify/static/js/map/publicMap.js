@@ -46,6 +46,7 @@ map.addControl(legend);
 // Layer to hold markers
 let locationLayer;
 let markerMap = {}; // reset per fetch
+let firstLoad = true;
 
 function fetchProperties() {
     let bounds = map.getBounds();
@@ -115,8 +116,14 @@ function fetchProperties() {
             }
         }).addTo(map);
 
-        // Fit bounds if needed
-        if (data.length) map.fitBounds(locationLayer.getBounds(), { maxZoom: 7, padding: [50, 50] });
+
+        if(firstLoad) {
+            map.fitBounds(locationLayer.getBounds(), {
+                maxZoom: 10,
+                padding: [5, 5],
+            });
+            firstLoad = false;
+        }
 
         renderPropertyList(data.features);
     });
@@ -124,7 +131,11 @@ function fetchProperties() {
 
 function renderPropertyList(features) {
     let listDiv = $('#property-list');
+    let numberOfProperty = $('#available-properties')
+
     listDiv.empty();
+    numberOfProperty.empty();
+
 
     if (!features.length) {
         listDiv.append(`
@@ -137,8 +148,14 @@ function renderPropertyList(features) {
             </div>
         </div>
         `);
+
+        numberOfProperty.append(`
+            0
+            `)
         return;
     }
+
+    numberOfProperty.append(features.length);
 
     features.forEach(feature => {
         const prop = feature.properties;
@@ -181,6 +198,7 @@ function renderPropertyList(features) {
         </div>
         `;
         listDiv.append(html);
+     
     });
 
     // Hover effect
@@ -201,5 +219,19 @@ function renderPropertyList(features) {
 // Map events
 map.on('moveend', fetchProperties);
 fetchProperties();
+
+
+// TESTING
+const divHeight = document.getElementById('search-panel');
+const offsetHeight = divHeight.offsetHeight;
+const computedStyle = window.getComputedStyle(divHeight);;
+const rect  = divHeight.getBoundingClientRect();
+const contentHeight = divHeight.clientHeight;
+
+
+console.log(offsetHeight);
+console.log(computedStyle);
+console.log(rect);
+console.log(contentHeight);
 
 

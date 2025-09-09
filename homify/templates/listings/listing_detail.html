@@ -69,12 +69,12 @@
           <div class="row text-center g-3">
             <!-- Bedrooms -->
             <div class="col-6">
-              <span class="d-block h4 mb-0 fw-bold">{{ properties.bedrooms }}</span>
+              <span class="d-block h4 mb-0 fw-bold">{{ properties.bedrooms|display_value }}</span>
               <small class="text-muted">Bed/s</small>
             </div>
             <!-- Floor Area -->
             <div class="col-6">
-              <span class="d-block h4 mb-0 fw-bold">{{ properties.floor_area|floatformat:0 }}</span>
+              <span class="d-block h4 mb-0 fw-bold">{{ properties.floor_area|floatformat:0 |display_value }}</span>
               <small class="text-muted">sqm</small>
             </div>
           </div>
