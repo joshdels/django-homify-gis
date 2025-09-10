@@ -1,6 +1,5 @@
 {% extends "base_v2.html" %}
 {% load static %}
-
 {% load custom_filters %}
 
 {% block title %} Homify | Dashboard {% endblock title %}
@@ -11,6 +10,7 @@
   /* Subtle card hover effect */
   .property-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; /* required for stretched-link */
   }
   .property-card:hover {
     transform: translateY(-5px);
@@ -23,8 +23,6 @@
     overflow-y: auto;
     padding-right: 1rem; /* optional for scrollbar spacing */
   }
-
-  /* Map fills height */
 </style>
 
 <div class="container-fluid p-0">
@@ -46,33 +44,36 @@
       </div>
 
       {% if properties %}
-      <div class="text-left">
         <p class="fs-6 text-sm">
-          You have: <strong>{{ properties|length }} unit/s</strong> 
+          You have: <strong>{{ properties|length }} unit/s</strong>
         </p>
-      </div>
       {% endif %}
 
       {% if properties %}
-        <div class="row g-3"> <!-- reduced gutter for nicer spacing -->
+        <div class="row g-3">
           {% for property in properties %}
           <div class="col-12 col-md-6 col-lg-4 d-flex">
             <div class="card property-card shadow-sm h-100 border-0 w-100 d-flex flex-column">
+              
+              <!-- Property Image -->
               {% with first_image=property.images.first %}
                 {% if first_image %}
                   <img src="{{ first_image.image.url }}" 
-                      class="card-img-top img-fluid rounded-top" 
-                      alt="Property image" 
-                      style="height: 180px; object-fit: cover;">
+                       class="card-img-top img-fluid rounded-top" 
+                       alt="Property image" 
+                       style="height: 180px; object-fit: cover;">
                 {% else %}
                   <img src="https://via.placeholder.com/400x180" 
-                      class="card-img-top img-fluid rounded-top" 
-                      alt="No image">
+                       class="card-img-top img-fluid rounded-top" 
+                       alt="No image">
                 {% endif %}
               {% endwith %}
 
+              <!-- Body -->
               <div class="card-body flex-grow-1">
-                <h5 class="card-title text-truncate">{{ property.address }}</h5>
+                <h5 class="card-title text-truncate">
+                  {{ property.address }}
+                </h5>
                 <p class="mb-2 small">
                   {{ property.get_category_display }} | {{ property.property_type|underscore_to_space|title }}
                 </p>
@@ -80,13 +81,15 @@
                 <p class="mb-0 text-muted small">
                   <i class="bi bi-calendar me-1"></i>{{ property.created_at|date:"M d, Y" }}
                 </p>
+                <!-- Stretched link (makes card clickable) -->
+                <a href="{% url 'listing_detail' property.id %}" class="stretched-link"></a>
               </div>
 
+              <!-- Footer -->
               <div class="card-footer bg-white border-0 d-flex justify-content-between pt-2">
                 <a href="{% url 'listing_update' property.id %}" class="btn btn-sm btn-outline-success">
                   <i class="bi bi-pencil-square me-1"></i> Edit
                 </a>
-
                 <button type="button" 
                         class="btn btn-sm btn-outline-danger" 
                         data-bs-toggle="modal" 
@@ -127,7 +130,6 @@
           </div>
           {% endfor %}
         </div>
-
       {% else %}
         <div class="alert alert-light border text-center shadow-sm rounded">
           <i class="bi bi-info-circle me-1"></i> No properties found.
@@ -136,8 +138,6 @@
 
       {% include 'page_footer.html' %}
     </div>
-
-   
 
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

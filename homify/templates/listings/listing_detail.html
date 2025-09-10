@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base_v2.html' %}
 {% block title %}Homify | Listing{% endblock title %}
+{% load static %}
 {% load custom_filters %}
 
 {% block content %}
@@ -106,9 +107,7 @@
       </div>
 
       <!-- Map -->
-      <div class="mb-4" id="listing-detail-map">
-        <div class="border rounded p-4 text-center text-muted">Map goes here</div>
-      </div>
+      <div class="mb-4" id="map-listing"></div>
 
     </div>
 
@@ -123,4 +122,8 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/map/listingFeatureMap.js' %}"></script>
+
 {% endblock content %}
+

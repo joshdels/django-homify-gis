@@ -1,7 +1,7 @@
 // Initialize Leaflet map
-let map = L.map('map', {
+let map = L.map('map-listing', {
     zoomControl: false,
-    gestureHandling: true
+    // gestureHandling: true
 }).setView([12.8797, 121.7740], 6);
 
 // Basemaps
@@ -18,7 +18,7 @@ let locationLayer;
 let markerMap = {}; // reset per fetch
 
 function fetchProperties() {
-    $.getJSON('/map-data/single-properties', {
+    $.getJSON('/map-data/all-properties', {
 
         
     }, function(data) {

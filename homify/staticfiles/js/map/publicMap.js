@@ -12,6 +12,7 @@ let OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{
 let basemaps = { "Road": terrain, "Satellite": satellite, "OSM": OpenStreetMap_HOT };
 L.control.layers(basemaps, null, { position: 'bottomright' }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
+L.control.fullscreen({position: 'topright', title: 'View Fullscreen', titleCancel: 'Exit Fullscreen'}).addTo(map);
 
 // Legend
 var legendControl = L.Control.extend({
@@ -45,6 +46,7 @@ map.addControl(legend);
 // Layer to hold markers
 let locationLayer;
 let markerMap = {}; // reset per fetch
+let firstLoad = true;
 
 function fetchProperties() {
     let bounds = map.getBounds();
@@ -93,9 +95,10 @@ function fetchProperties() {
                         <div class="card-body">
                             <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
                             <p class="card-text m-0 mb-1">
-                                ${prop.category.charAt(0).toUpperCase() + prop.category.slice(1)} <br>
-                                 <strong>${displayValue(prop.floor_area)}</strong> sqm | 
-                                 <strong>${displayValue(prop.bedrooms)}</strong> bed/s
+                                ${prop.property_type.replace(/_/g, " ").charAt(0).toUpperCase() + 
+                                prop.property_type.replace(/_/g, " ").slice(1)} <br>
+                                <strong>${displayValue(prop.floor_area)}</strong> sqm | 
+                                <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                             </p>
                             <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
                         </div>
@@ -113,8 +116,14 @@ function fetchProperties() {
             }
         }).addTo(map);
 
-        // Fit bounds if needed
-        if (data.length) map.fitBounds(locationLayer.getBounds(), { maxZoom: 7, padding: [50, 50] });
+
+        if(firstLoad) {
+            map.fitBounds(locationLayer.getBounds(), {
+                maxZoom: 10,
+                padding: [5, 5],
+            });
+            firstLoad = false;
+        }
 
         renderPropertyList(data.features);
     });
@@ -122,12 +131,31 @@ function fetchProperties() {
 
 function renderPropertyList(features) {
     let listDiv = $('#property-list');
+    let numberOfProperty = $('#available-properties')
+
     listDiv.empty();
+    numberOfProperty.empty();
+
 
     if (!features.length) {
-        listDiv.append('<p>No properties in this area.</p>');
+        listDiv.append(`
+        <div class="col-12 mb-3 d-flex justify-content-center">
+            <div class="card shadow-sm border-0 text-center p-4">
+                <h5 class="fw-bold text-danger mb-2">No Properties Found</h5>
+                <p class="text-muted mb-0">
+                    Try zooming out, moving the map, or adjusting your filters.
+                </p>
+            </div>
+        </div>
+        `);
+
+        numberOfProperty.append(`
+            0
+            `)
         return;
     }
+
+    numberOfProperty.append(features.length);
 
     features.forEach(feature => {
         const prop = feature.properties;
@@ -153,13 +181,16 @@ function renderPropertyList(features) {
                   style="height: 180px; object-fit: cover;">
 
               <div class="card-body flex-grow-1">
-                <p class="fw-bold h4 mb-1">₱${Math.round(Number(prop.price))}/mo </p>
+                <p class="fw-bold h4 mb-2">₱${Math.round(Number(prop.price))}/mo </p>
                 
-                <p class="mb-2 small gx-2">
+                <p class="small mb-0">
                   ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''} |
                   <strong>${displayValue(prop.floor_area)}</strong> sqm | 
                   <strong>${displayValue(prop.bedrooms)}</strong> bed/s
                 </p>
+                <p class>
+                    ${prop.address}
+                </p> 
                 
               </div>
             </div>
@@ -167,6 +198,7 @@ function renderPropertyList(features) {
         </div>
         `;
         listDiv.append(html);
+     
     });
 
     // Hover effect
@@ -187,3 +219,19 @@ function renderPropertyList(features) {
 // Map events
 map.on('moveend', fetchProperties);
 fetchProperties();
+
+
+// TESTING
+const divHeight = document.getElementById('search-panel');
+const offsetHeight = divHeight.offsetHeight;
+const computedStyle = window.getComputedStyle(divHeight);;
+const rect  = divHeight.getBoundingClientRect();
+const contentHeight = divHeight.clientHeight;
+
+
+console.log(offsetHeight);
+console.log(computedStyle);
+console.log(rect);
+console.log(contentHeight);
+
+

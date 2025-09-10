@@ -22,6 +22,14 @@ body {
     position: relative;
 }
 
+/* Full-height map and sidebar */
+#map-listing{
+    height: 300px;
+    width: 100%; 
+    background-color: black;
+    position: relative;
+}
+
 /* Sidebar scroll if content is taller than viewport */
 #sidebar {
   height: calc(100vh - var(--navbar-height));
@@ -133,7 +141,6 @@ body {
 
 #search-panel {
     position: relative;
-    z-index: 1050; /* Bootstrap dropdowns default z-index ~1050 */
 }
 
 /* Bootstrap dropdown menu */
