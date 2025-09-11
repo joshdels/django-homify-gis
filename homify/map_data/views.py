@@ -50,10 +50,24 @@ def PropertyUserListing(request):
 
 
 @api_view(["GET"])
-def SinglePropertyListing(request):
-  properties = Property.objects.filter(owner=id)
-  serializer = PropertySerializer(properties, many=True, context={"request": request})
-  return Response(serializer.data)
+def SinglePropertyListing(request, id):
+  try:
+     property_obj = Property.objects.get(pk=id)
+  except Property.DoesNotExist:
+    return Response({"error": "Property not found"}, status=404)
+  
+  serializer = PropertySerializer(property_obj, context={"request": request})
+  
+  feature = {
+    "type": "Feature",
+    "geometry": json.loads(property_obj.geom.geojson),  
+    "properties": serializer.data
+  }
+  
+  return Response({
+    "type": "FeatureCollection", 
+    "features": [serializer.data]}
+  )
 
 
 

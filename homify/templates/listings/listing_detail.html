@@ -125,5 +125,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/map/listingFeatureMap.js' %}"></script>
 
+<script>
+    fetchProperties( {{ properties.id }} );
+</script>
+
+
 {% endblock content %}
+
 

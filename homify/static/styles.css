@@ -24,7 +24,7 @@ body {
 
 /* Full-height map and sidebar */
 #map-listing{
-    height: 300px;
+    height: 400px;
     width: 100%; 
     background-color: black;
     position: relative;
