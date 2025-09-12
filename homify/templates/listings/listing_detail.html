@@ -116,6 +116,9 @@
       <div class="d-flex flex-column border rounded-2 gap-2 p-3 sticky-top" style="top:40px;">
         <button class="btn btn-primary">Request a Tour</button>
         <button class="btn btn-outline-secondary">Owner's Detail</button>
+
+        <!-- Share Button -->
+         <button class="btn btn-success" onclick="shareListing('{{ properties.address|escapejs}}')">Share Listing</button>
       </div>
     </div>
 
@@ -126,10 +129,13 @@
 <script src="{% static 'js/map/listingFeatureMap.js' %}"></script>
 
 <script>
-    fetchProperties( {{ properties.id }} );
+    fetchProperties({{ properties.id }});
 </script>
 
 
+{% include 'page_footer.html' %}
+
 {% endblock content %}
+
 
 

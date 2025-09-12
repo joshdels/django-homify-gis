@@ -3,6 +3,13 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GistIndex 
 
 
+class Amenity(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+
+
 class Property(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="properties")
     description = models.TextField(max_length=500, blank=True)
@@ -23,13 +30,14 @@ class Property(models.Model):
     property_type = models.CharField(max_length=50, choices=PROPERTY_TYPES)
 
     address = models.CharField(max_length=200, blank=True)
+    address_city = models.CharField(max_length=200, blank=True)
     price = models.IntegerField(blank=True, null=True)
     bedrooms = models.IntegerField(blank=True, null=True)
+    number_of_rooms = models.IntegerField(blank=True, null=True)
     bathrooms = models.IntegerField(blank=True, null=True)
     floor_storey = models.IntegerField(blank=True, null=True, default=1)
     floor_area = models.IntegerField(blank=True, null=True)
     available_unit = models.IntegerField(blank=True, null=True, default=1)
-    parking_spaces = models.IntegerField(blank=True, null=True)
 
     STATUS_CHOICES = [
         ("available", "Available"),
@@ -43,8 +51,6 @@ class Property(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    
-    
     geom = models.PointField(srid=4326, null=True, blank=True)
     class Meta:
         indexes = [
@@ -52,9 +58,11 @@ class Property(models.Model):
             GistIndex(fields=["geom"]),
         ]
         
+    amenities = models.ManyToManyField("Amenity", related_name="listings", blank=True)
+        
     def __str__(self):
         return f"{self.get_property_type_display()} - {self.address or 'No Address'}"
-
+    
     
 class PropertyImage(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="images")

@@ -2,7 +2,7 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}Add Properties{% endblock title %}
+{% block title %}Homira | Add Properties{% endblock title %}
 
 {% block content %}
 
@@ -31,18 +31,104 @@
           <!-- Property Details -->
           <div class="mb-4">
             <h5 class="fw-semibold mb-3 text-secondary">🏠 Property Details</h5>
-            <div class="row g-3">
-              {% for field in form %}
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">{{ field.label }}</label>
-                  {{ field|add_class:"form-control" }}
-                  {% if field.errors %}
-                    <div class="text-danger small mt-1">{{ field.errors }}</div>
-                  {% endif %}
+            <div class="row g-3 mb-3">
+
+              <!-- Category -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.category.label }}</label>
+                {{ form.category|add_class:"form-select" }}
+              </div>
+
+              <!-- Property Type -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.property_type.label }}</label>
+                {{ form.property_type|add_class:"form-select" }}
+              </div>
+
+              <!-- Address -->
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.address.label }}</label>
+                {{ form.address|add_class:"form-control" }}
+              </div>
+
+              <!-- City -->
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.address_city.label }}</label>
+                {{ form.address_city|add_class:"form-control" }}
+              </div>
+
+              <!-- Price -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.price.label }}</label>
+                {{ form.price|add_class:"form-control" }}
+              </div>
+
+              <!-- Floor Area -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.floor_area.label }}</label>
+                {{ form.floor_area|add_class:"form-control" }}
+              </div>
+
+              <!-- Bedrooms -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.bedrooms.label }}</label>
+                {{ form.bedrooms|add_class:"form-control" }}
+              </div>
+
+              <!-- Bathrooms -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.bathrooms.label }}</label>
+                {{ form.bathrooms|add_class:"form-control" }}
+              </div>
+
+              <!-- Number of Rooms -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.number_of_rooms.label }}</label>
+                {{ form.number_of_rooms|add_class:"form-control" }}
+              </div>
+
+              <!-- Floor Storey -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.floor_storey.label }}</label>
+                {{ form.floor_storey|add_class:"form-control" }}
+              </div>
+
+              <!-- Available Units -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.available_unit.label }}</label>
+                {{ form.available_unit|add_class:"form-control" }}
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{{ form.status.label }}</label>
+                {{ form.status|add_class:"form-select" }}
+              </div>
+
+              <!-- Amenities -->
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.amenities.label }}</label>
+                <div class="row">
+                  {% for checkbox in form.amenities %}
+                    <div class="form-check mx-3">
+                      {{ checkbox }}
+                    </div>
+                  {% endfor %}
                 </div>
-              {% endfor %}
-            </div>
-          </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+                <label class="form-label fw-semibold">{{ form.description.label }}</label>
+                {{ form.description|add_class:"form-control" }}
+              </div>
+
+            </div> <!-- END row -->
+          </div> <!-- END Property Details -->
+
+          <!-- Hidden Lat/Lng -->
+          {{ form.latitude }}
+          {{ form.longitude }}
 
           <!-- Property Images -->
           <div class="mb-4">
@@ -55,15 +141,15 @@
           <div class="mt-auto pt-3 border-top">
             <div class="d-grid">
               <button type="submit" class="btn btn-primary btn-lg shadow-sm rounded-pill">
-                💾 Save Property
+                Save Property
               </button>
             </div>
           </div>
 
         </form>
 
+        {% include 'page_footer.html' %}
       </div>
-      {% include 'page_footer.html' %}
     </div>
 
   </div>
@@ -79,12 +165,14 @@
     box-sizing: border-box;
   }
   
-#sidebar {
-  height: 100vh;  /* sidebar full height */
-  overflow-y: auto; /* enable vertical scroll */
-}
+  #sidebar {
+    height: 100vh;  /* sidebar full height */
+    overflow-y: auto; /* enable vertical scroll */
+  }
 
-
+  body {
+    overflow-y: hidden;
+  }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

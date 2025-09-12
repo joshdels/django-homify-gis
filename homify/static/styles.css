@@ -161,6 +161,24 @@ body {
 }
 
 
+/* Listing Features */
+
+#googlemaps-btn, #legend-home {
+  font: 14px/16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#id_amenities div {
+  margin-bottom: 8px;
+}
+
+
+
 
 
 
