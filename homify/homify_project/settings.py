@@ -19,67 +19,67 @@ SECRET_KEY = "django-insecure-eo_)0o^)asdl-@(fi)x1z*mm5ixlz5%i^$m-#hd3e_5!zm_g&w
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "homify.topmapsolutions.com",  
-    "topmapsolutions.com",       
-    "127.0.0.1",               
-    "localhost",           
+"homify.topmapsolutions.com",  
+"topmapsolutions.com",       
+"127.0.0.1",               
+"localhost",           
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://topmapsolutions.com',
-    'https://www.topmapsolutions.com',
-    'https://homify.topmapsolutions.com',
-    'https://www.homify.topmapsolutions.com'
+'https://topmapsolutions.com',
+'https://www.topmapsolutions.com',
+'https://homify.topmapsolutions.com',
+'https://www.homify.topmapsolutions.com'
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.gis",
-    
-    # Extensions
-    "django_bootstrap5",
-    "rest_framework",
-    "rest_framework_gis",
-    "widget_tweaks",
-    
-    # Local apps
-    "accounts.apps.AccountsConfig",
-    "homify.apps.HomifyConfig",
-    "listings.apps.ListingsConfig",
+"django.contrib.admin",
+"django.contrib.auth",
+"django.contrib.contenttypes",
+"django.contrib.sessions",
+"django.contrib.messages",
+"django.contrib.staticfiles",
+"django.contrib.gis",
+
+# Extensions
+"django_bootstrap5",
+"rest_framework",
+"rest_framework_gis",
+"widget_tweaks",
+
+# Local apps
+"accounts.apps.AccountsConfig",
+"homify.apps.HomifyConfig",
+"listings.apps.ListingsConfig",
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+"django.middleware.security.SecurityMiddleware",
+"django.contrib.sessions.middleware.SessionMiddleware",
+"django.middleware.common.CommonMiddleware",
+"django.middleware.csrf.CsrfViewMiddleware",
+"django.contrib.auth.middleware.AuthenticationMiddleware",
+"django.contrib.messages.middleware.MessageMiddleware",
+"django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "homify_project.urls"
 
 TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
+{
+"BACKEND": "django.template.backends.django.DjangoTemplates",
+'DIRS': [BASE_DIR / "templates"],
+"APP_DIRS": True,
+"OPTIONS": {
+"context_processors": [
+    "django.template.context_processors.request",
+    "django.contrib.auth.context_processors.auth",
+    "django.contrib.messages.context_processors.messages",
+],
+},
+},
 ]
 
 WSGI_APPLICATION = "homify_project.wsgi.application"
@@ -89,14 +89,14 @@ WSGI_APPLICATION = "homify_project.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'mydb',
-        'USER': 'postgres',
-        'PASSWORD': 'mypassword',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
+'default': {
+'ENGINE': 'django.contrib.gis.db.backends.postgis',
+'NAME': 'mydb',
+'USER': 'postgres',
+'PASSWORD': 'mypassword',
+'HOST': 'db',
+'PORT': '5432',
+}
 }
 
 
@@ -104,18 +104,18 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+{
+"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+},
+{
+"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+},
+{
+"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+},
+{
+"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+},
 ]
 
 
@@ -147,3 +147,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'homepage'
+
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = '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'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+
+

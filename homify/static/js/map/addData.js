@@ -1,5 +1,8 @@
 // Initialize map
-const map = L.map("map", { zoomControl: false })
+const map = L.map("map", {
+   zoomControl: false,
+   gestureHandling: true,
+  })
   .setView([12.8797, 121.7740], 6);
 
 // Base layers

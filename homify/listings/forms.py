@@ -37,7 +37,7 @@ class PropertyForm(forms.ModelForm):
 
         if commit:
             instance.save()
-            self.save_m2m()  # ✅ ensures amenities (ManyToMany) get saved
+            self.save_m2m()  #
 
         return instance
 
