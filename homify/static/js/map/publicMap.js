@@ -48,94 +48,98 @@ let locationLayer;
 let markerMap = {}; // reset per fetch
 let firstLoad = true;
 
-function fetchProperties() {
+function fetchProperties(filter = null) {
     let bounds = map.getBounds();
     let sw = bounds.getSouthWest();
     let ne = bounds.getNorthEast();
 
-    $.getJSON('/map-data/all-properties', {
-        swLat: sw.lat,
-        swLng: sw.lng,
-        neLat: ne.lat,
-        neLng: ne.lng
-        
-    }, function(data) {
-        // Remove old layer and reset markerMap
-        if (locationLayer) map.removeLayer(locationLayer);
-        markerMap = {};
+    if (filter) {
+        let payload = {
+            swLat: sw.lat,
+            swLng: sw.lng,
+            neLat: ne.lat,
+            neLng: ne.lng,
+            ...filter // merge filter values
+        };
 
-        locationLayer = L.geoJSON(data.features, {
-            pointToLayer: function(feature, latlng) {
-                return L.circleMarker(latlng, {
-                    color: "white",
-                    fillColor: "purple",
-                    fillOpacity: 1,
-                    radius: 6,
-                    interactive: true
-                });
-            },
-            onEachFeature: function(feature, layer) {
-                const prop = feature.properties;
-
-                markerMap[prop.id] = markerMap[prop.id] || [];
-                markerMap[prop.id].push(layer);
-
-                function displayValue(value) {
-                    if (value === null || value === undefined) return "--";
-                    if (typeof value === "string") {
-                        let v = value.trim().toLowerCase();
-                        if (v === "null" || v === "undefined" || v === "") return "--";
-                    }
-                    return value;
-                }
-
-                layer.bindPopup(`
-                    <div class="card">
-                        <img src="${prop.images[0]?.image_url || ''}" class="card-img-top" alt="Property image">
-                        <div class="card-body">
-                            <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
-                            <p class="card-text m-0 mb-1">
-                                ${prop.property_type.replace(/_/g, " ").charAt(0).toUpperCase() + 
-                                prop.property_type.replace(/_/g, " ").slice(1)} <br>
-                                <strong>${displayValue(prop.floor_area)}</strong> sqm | 
-                                <strong>${displayValue(prop.bedrooms)}</strong> bed/s
-                            </p>
-                            <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
-                        </div>
-                    </div>
-                `);
-
-                layer.on({
-                    mouseover: function(e) {
-                        e.target.setStyle({ fillColor: "green", radius: 8 });
-                    },
-                    mouseout: function(e) {
-                        e.target.setStyle({ fillColor: "purple", radius: 6 });
-                    },
-                });
+        $.ajax({
+            url: '/map-data/all-properties/', 
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: handlePropertyResponse,
+            error: function (err) {
+                console.error("POST error:", err);
             }
-        }).addTo(map);
+        });
 
+    } else {
+        $.getJSON('/map-data/all-properties/', {
+            swLat: sw.lat,
+            swLng: sw.lng,
+            neLat: ne.lat,
+            neLng: ne.lng
+        }, handlePropertyResponse);
+    }
+}
 
-        if(firstLoad) {
-            map.fitBounds(locationLayer.getBounds(), {
-                maxZoom: 10,
-                padding: [5, 5],
+// common handler
+function handlePropertyResponse(data) {
+    if (locationLayer) map.removeLayer(locationLayer);
+    markerMap = {};
+
+    locationLayer = L.geoJSON(data.features, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                color: "white",
+                fillColor: "purple",
+                fillOpacity: 1,
+                radius: 6,
+                interactive: true
             });
-            firstLoad = false;
-        }
+        },
+        onEachFeature: function (feature, layer) {
+            const prop = feature.properties;
 
-        renderPropertyList(data.features);
-    });
+            markerMap[prop.id] = markerMap[prop.id] || [];
+            markerMap[prop.id].push(layer);
+
+            layer.bindPopup(`
+                <div class="card">
+                    <img src="${prop.images[0]?.image_url || ''}" class="card-img-top" alt="Property image">
+                    <div class="card-body">
+                        <h5 class="mb-2">₱${Math.round(Number(prop.price))} /mo</h5>
+                        <p class="card-text m-0 mb-1">
+                            ${prop.property_type.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())} <br>
+                            <strong>${prop.floor_area || "--"}</strong> sqm | 
+                            <strong>${prop.bedrooms || "--"}</strong> bed/s
+                        </p>
+                        <a href="/listings/${feature.id}" class="btn btn-outline-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            `);
+
+            layer.on({
+                mouseover: (e) => e.target.setStyle({ fillColor: "green", radius: 8 }),
+                mouseout: (e) => e.target.setStyle({ fillColor: "purple", radius: 6 })
+            });
+        }
+    }).addTo(map);
+
+    if (firstLoad && data.features.length > 0) {
+        map.fitBounds(locationLayer.getBounds(), { maxZoom: 10, padding: [5, 5] });
+        firstLoad = false;
+    }
+
+    renderPropertyList(data.features);
 }
 
 function renderPropertyList(features) {
     let listDiv = $('#property-list');
-    let numberOfProperty = $('#available-properties')
+    let numberOfProperty = $('#available-properties');
 
     listDiv.empty();
     numberOfProperty.empty();
-
 
     if (!features.length) {
         listDiv.append(`
@@ -148,10 +152,7 @@ function renderPropertyList(features) {
             </div>
         </div>
         `);
-
-        numberOfProperty.append(`
-            0
-            `)
+        numberOfProperty.append(`0`);
         return;
     }
 
@@ -159,20 +160,10 @@ function renderPropertyList(features) {
 
     features.forEach(feature => {
         const prop = feature.properties;
-        const id = feature.id
-
-        function displayValue(value) {
-            if (value === null || value === undefined) return "--";
-            if (typeof value === "string") {
-                let v = value.trim().toLowerCase();
-                if (v === "null" || v === "undefined" || v === "") return "--";
-            }
-            return value;
-        }
-
+        const id = feature.id;
 
         let html = `
-        <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex property-card">
+        <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex property-card" data-id="${id}">
           <a href="/listings/${id}" class="w-100 text-decoration-none text-dark">
             <div class="card shadow-sm h-100 border-0 d-flex flex-column">
               <img src="${prop.images[0]?.image_url || 'https://via.placeholder.com/400x180'}"
@@ -182,23 +173,18 @@ function renderPropertyList(features) {
 
               <div class="card-body flex-grow-1">
                 <p class="fw-bold h4 mb-2">₱${Math.round(Number(prop.price))}/mo </p>
-                
                 <p class="small mb-0">
                   ${prop.property_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || ''} |
-                  <strong>${displayValue(prop.floor_area)}</strong> sqm | 
-                  <strong>${displayValue(prop.bedrooms)}</strong> bed/s
+                  <strong>${prop.floor_area || "--"}</strong> sqm | 
+                  <strong>${prop.bedrooms || "--"}</strong> bed/s
                 </p>
-                <p class>
-                    ${prop.address}
-                </p> 
-                
+                <p>${prop.address || ''}</p>
               </div>
             </div>
           </a>
         </div>
         `;
         listDiv.append(html);
-     
     });
 
     // Hover effect
@@ -206,18 +192,18 @@ function renderPropertyList(features) {
         function () {
             let id = $(this).data("id");
             let marker = markerMap[id];
-            if (marker) marker.setStyle({ fillColor: "green", radius: 8 });
+            if (marker) marker.forEach(m => m.setStyle({ fillColor: "green", radius: 8 }));
         },
         function () {
             let id = $(this).data("id");
             let marker = markerMap[id];
-            if (marker) marker.setStyle({ fillColor: "purple", radius: 6 });
+            if (marker) marker.forEach(m => m.setStyle({ fillColor: "purple", radius: 6 }));
         }
     );
 }
 
-// Map events
-map.on('moveend', fetchProperties);
+// map events
+map.on('moveend', () => fetchProperties());
 fetchProperties();
 
 
@@ -228,10 +214,5 @@ const computedStyle = window.getComputedStyle(divHeight);;
 const rect  = divHeight.getBoundingClientRect();
 const contentHeight = divHeight.clientHeight;
 
-
-console.log(offsetHeight);
-console.log(computedStyle);
-console.log(rect);
-console.log(contentHeight);
 
 
