@@ -3,3 +3,10 @@ nginx
 homify/db.sqlite3
 test
 homify/media
+<<<<<<< HEAD
+=======
+__pycache__
+/__pycache__
+homify/medie
+\property_images
+>>>>>>> a12c2588fe7eb00cc71d049b2b6054985f5910eb

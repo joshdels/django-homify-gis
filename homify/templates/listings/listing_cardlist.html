@@ -1,71 +1,43 @@
 {% extends 'base_v2.html' %} 
 {% load static %} 
 
-{% block title %}Map{% endblock title %}
+{% block title %} Homify | All Listings{% endblock title %}
 
 {% block content %}
 
-<div class="container-fluid p-0">
-  <div class="row g-0">
-    <!-- Row with fixed height -->
 
+<!-- content -->
+<div class="p-0">
+  <div class="row" id="search-panel">
+      {% include 'listings/listings_search_panel.html' %}
+  </div>
+
+
+  <div class="row g-0">
     <!-- LEFT: Map -->
-    <div class="col-12 col-md-6 p-0" id="map" style="background-color: black;">
-      Map
-    </div>
+    <div class="col-12 col-md-6 p-0" id="map" style="background-color: black;"> </div>
 
     <!-- RIGHT: Property Cards -->
     <div
       class="col-12 col-md-6 p-3 d-flex flex-column"
       id="sidebar"
     >
-      <div class="mb-4 border-bottom pb-2">
-        <span class="fw-bold fs-5 mb-1">📋 Listing</span>
-        <p class="text-muted fs-6 mb-0 text-sm">
-          Available properties: {{ properties|length }} units
+      <div class="text-left px-3 pt-1">
+        <p class="fs-6 text-sm">
+          <!-- populate -->
+          Available properties: <strong>  <span id="available-properties"></span> unit/s</strong> 
+         
         </p>
       </div>
 
-      <div class="row row-cols-1 row-cols-md-2 g-3 flex-grow-1">
-        {% for property in properties %}
-        <div class="col">
-          <div class="card h-100 shadow-sm position-relative property-card">
-            {% if property.images.all %}
-            <img
-              src="{{ property.images.first.image.url }}"
-              class="card-img-top property-card-img"
-              alt="Property image"
-            />
-            {% else %}
-            <img
-              src="{% static 'imgs/user.jpg' %}"
-              class="card-img-top property-card-img"
-              alt="No image available"
-            />
-            {% endif %}
-            <div class="card-body">
-              <h5 class="mb-2" id="card-header">
-                ₱{{ property.price|floatformat:0 }}/month
-              </h5>
-              <p class="m-0 mb-1" id="card-text-1">
-                <strong>{{ property.property_type|title }}</strong> |
-                <strong>{{ property.floor_area }}</strong> sqm |
-                <strong>{{ property.bedrooms }}</strong> bed/s
-              </p>
-              <p class="m-0 text-muted" id="card-text-2">
-                {{ property.address }}
-              </p>
-              <a
-                href="{% url 'listing_detail' property.id %}"
-                class="stretched-link"
-              ></a>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
 
+      <div class="container">
+          <div class="row row-cols-1 row-cols-md-2 g-3 mx-auto" id="property-list">
+              <!-- JS will populate property cards here -->
+          </div>
       </div>
       {% include 'page_footer.html' %}
+
     </div>
   </div>
 </div>
@@ -83,8 +55,22 @@
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   }
+
+  /* Full-height map and sidebar */
+  #map{
+      height: calc(91.5vh - var(--navbar-height));
+      position: relative;
+  }
+
+  /* Sidebar scroll if content is taller than viewport */
+  #sidebar {
+    height: calc(91.5vh - var(--navbar-height));
+    overflow-y: auto;
+  }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'map/publicMap.js' %}"></script>
+<script src="{% static 'js/functions/filter.js' %}"></script>
+
+<script src="{% static 'js/map/publicMap.js' %}"></script>
 
 {% endblock content %}

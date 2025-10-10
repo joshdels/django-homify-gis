@@ -1,48 +1,51 @@
+:root {
+  --navbar-height: 55px; /* adjust after checking actual navbar height */
+}
+
 /* Reset html and body */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Adjust for fixed navbar */
 body {
-  padding-top: 55.5px; /* match navbar height */
+  padding-top: var(--navbar-height);
 }
 
 /* Full-height map and sidebar */
 #map{
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
+    position: relative;
+}
+
+/* Full-height map and sidebar */
+#map-listing{
+    height: 400px;
+    width: 100%; 
+    background-color: black;
     position: relative;
 }
 
 /* Sidebar scroll if content is taller than viewport */
 #sidebar {
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   overflow-y: auto;
 }
 
-/* Property cards styling */
-.property-card-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
 
-.property-card:hover {
-  transform: translateY(-3px);
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
+
 
 /* Desktop: split map + sidebar */
 @media (min-width: 768px) {
   #map {
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
   }
   #sidebar {
-    height: calc(100vh - 55.5px);
+    height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
   }
 }
@@ -50,11 +53,17 @@ body {
 /* Mobile: map full screen on top, listings below */
 @media (max-width: 767px) {
   #map {
-    height: calc(100vh - 55.5px); /* full viewport height minus navbar */
+    height: calc(100vh - var(--navbar-height));
   }
   #sidebar {
-    height: auto;       /* let content flow naturally */
-    overflow-y: visible; /* listings scroll with page */
+    height: auto;     
+    overflow-y: visible; 
+  }
+}
+
+@media (max-width: 576px) {
+  #listing-img img {
+    height: 150px; /* smaller images on phones */
   }
 }
 
@@ -112,6 +121,33 @@ body {
   z-index: 5000
 }
 
+.leaflet-control {
+    z-index: 500;   
+}
+
+/* Fullscreen Leaflet */
+.leaflet-control-fullscreen a::before {
+  font-family: "bootstrap-icons" !important;
+  content: "\f3e9";  /* Unicode for `bi-fullscreen` */
+  font-size: 18px;
+  display: inline-block;
+  color: #333; /* adjust to match your theme */
+}
+
+.leaflet-control-fullscreen a.leaflet-fullscreen-on::before {
+  content: "\f2d0";  /* Unicode for `bi-fullscreen-exit` */
+}
+
+
+#search-panel {
+    position: relative;
+}
+
+/* Bootstrap dropdown menu */
+#search-panel .dropdown-menu {
+    z-index: 2000 !important; /* make sure it is above leaflet controls */
+}
+
 #listing-features {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
@@ -123,6 +159,30 @@ body {
   border-color: rgb(238, 238, 238); 
   text-align: center;
 }
+
+
+/* Listing Features */
+
+#googlemaps-btn, #legend-home {
+  font: 14px/16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#id_amenities div {
+  margin-bottom: 8px;
+}
+
+
+
+
+
+
+
 
 
 
